@@ -8,11 +8,21 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-     <link rel="icon" href="../resources/images/favicon.ico">
+    <!-- build:[href] ../resources/images/favicon.ico -->
+     <link rel="icon" href="../../resources/assets/images/favicon.ico">
+    <!-- /build -->
     <title>For your security | Worldpay Account</title>
 
-    <link rel="stylesheet" href="../resources/css/vendor/wpbootstrap/wp.bootstrap.min.css">
-    <link rel="stylesheet" href="css/sq.min.css">
+    <!-- build:css ../resources/css/vendor/wpbootstrap/wp.bootstrap.min.css -->
+      <link href="../../resources/css/vendor/wpbootstrap/wp.bootstrap.min.css" rel="stylesheet">
+    <!-- /build -->
+    <!-- build:css css/sq.min.css -->
+      <link href="../../resources/css/app/SSOTemplate.css" rel="stylesheet">
+      <link href="../common/components/loading/css/loading.css" rel="stylesheet">
+      <link href="../common/components/session-idle/css/sessionIdle.css" rel="stylesheet">
+      <link href="css/accountdisabled.css" rel="stylesheet">
+      <link href="css/securityquestions.css" rel="stylesheet">
+    <!-- /build -->
     <!-- <link href="css/sq.min.css" rel="stylesheet"> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -43,7 +53,31 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
-    <script src="js/sq.min.js"></script>
+    <!-- build:js js/sq.min.js -->
+    <script src="../../resources/js/vendor/jquery.min.js"></script>
+    <script src="../../resources/js/vendor/angular/angular.min.js"></script>
+    <script src="../../resources/js/vendor/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="../../resources/js/vendor/wpbootstrap/wp.bootstrap.min.js"></script>
+
+    <!-- <script src="../common/index/url.module.js"></script>
+    <script src="../common/index/js/url.controller.js"></script>
+    <script src="../common/index/js/url.service.js"></script>
+    <script src="../common/index/js/date.ctrl.js"></script>
+     -->
+    <!-- <script src="../common/components/session-idle/js/sessionIdle.module.js"></script>
+    <script src="../common/components/session-idle/js/sessionIdle.directive.js"></script>
+    <script src="../common/components/session-idle/js/sessionIdle.service.js"></script>
+
+    <script src="../common/components/analytics/analytics.module.js"></script>
+    <script src="../common/components/analytics/analytics.service.js"></script>
+    <script src="../common/components/analytics/analyticsConfig.service.js"></script>
+
+    <script src="app.js"></script>
+    <script src="js/securityquestions.serv.js"></script>
+    <script src="js/securityquestions.ctrl.js"></script>
+    <script src="js/accountdisabled.ctrl.js"></script> -->
+
+    <!-- /build -->
 
     <!-- <script src="js/vendor.concat.js"></script> -->
 
