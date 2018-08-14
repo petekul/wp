@@ -1,0 +1,15 @@
+ /*WP Bootstrap 
+@import url("/sso/resources/assets/styles/wpbootstrap/wp.bootstrap.min.css");
+/*@import url("wpbootstrap/wp.bootstrap-theme.min.css");
+
+/* Global CSS 
+@import url("/sso/resources/assets/styles/SSOTemplate.css");
+
+/* Assets | Directives 
+@import url("../../common/components/loading/css/loading.css");
+@import url("../../common/components/session-idle/css/sessionIdle.css");
+
+/* Security questions Page 
+@import url("../dist/css/securityquestions.min.css");
+
+*/

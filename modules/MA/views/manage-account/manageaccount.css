@@ -1,0 +1,531 @@
+#frmDetails, #frmEmail,
+#frmPassword{
+    /*display:none;*/
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.title{
+    margin-bottom: 30px;
+}
+
+.subtitle{
+    color:#919191;
+    margin-bottom:15px;
+}
+
+#toggleDetails, #toggleEmail,
+#togglePassword{
+    padding:26px 15px;
+}
+#toggleDetails:focus, #toggleEmail:focus,
+#togglePassword:focus{
+    background-color:white;
+}
+
+.savedsuccess{
+    text-align: right;
+    font-size:12px;
+    top:5px;
+    color: green;
+    transition:all 0.5s ease-in-out;
+}
+.savedsuccess.ng-hide{
+    opacity: 0;
+}
+.fadeout {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+#titletext{
+    margin-bottom:30px;
+}
+
+#btnUSUContinue{
+    width:25%;
+}
+
+#btnSSOK{
+    margin-top:10px;
+    width:85px;
+}
+
+#subtitle{
+    margin-bottom:20px;
+}
+
+.input-disabled{
+    background-color:#DEDEDE !important;
+    color: #919191 !important;
+    padding:2px 1px;
+}
+.incomplete{
+    display:none;
+    color:white;
+}
+.matched{
+    color:green;
+}
+.incorrect{
+    color:red;
+}
+
+.titleItem{
+    text-decoration:none;
+}
+
+#cmbTitle, #txtFirstname, #txtLastname,
+#txtNewEmail, #txtConfirmEmail,
+#txtSetUpNewPassword, #txtSetUpConfirmPassword{
+    width:100%;
+    color:#393939;
+}
+
+.textDetails, .textEmail{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.tooltip{
+    white-space: nowrap;
+}
+.tooltip-inner{
+    background-color: #DCDCDC;
+    color:#393939;
+    max-width: unset;
+    padding:12px;
+}
+.tooltip.top .tooltip-arrow{
+    border-top-color: #DCDCDC;
+}
+.tooltip.in{
+    opacity: 1;
+}
+
+#cmbTitle{
+    text-align: left;
+}
+
+#lblTerms{
+    font-weight:400;
+}
+
+#tickTitle, #tickFirstname, #tickLastname,
+#tickNewEmail, #tickConfirmEmail{
+    display:block;
+}
+
+
+p[id^="error"], p[id^="lblErr"]{
+    display:none;
+    color:red;
+    font-size:14px;
+}
+
+@media (max-width:787px){
+    #btnUSUContinue{width:120px;}
+}
+
+body {
+    margin: 0;
+    height: auto;
+}
+
+.redirectMessage{
+    color:#919191;
+    font-size:12px;
+    text-align:center;
+}
+
+md-input-container.mdInputCmb{
+    width:100%;
+}
+
+/* FOR TEXTBOX */
+
+md-input-container .md-input.materialTxt{
+    border-width: 1px;
+    border-radius: 4px;
+    padding: 15px 10px 1px;
+    height:45px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+md-input-container.mdInput{
+    width:100%;
+    margin-top:0px;
+    margin-bottom:0px;
+}
+
+md-input-container label:not(.md-no-float):not(.md-container-ignore).materialLbl{
+    transform: translate3d(0, 13px, 0) scale(1);
+    font-weight: 500 !important;
+    bottom:63%;
+    left: 3%;
+}
+
+md-input-container.md-input-focused label:not(.md-no-float).materialLbl{
+    transform: translate3d(1px, 6px, 0) scale(0.75);
+    left:10px;
+}
+
+md-input-container.md-input-has-value label:not(.md-no-float).materialLbl {
+    transform: translate3d(1px, 6px, 0) scale(0.75);
+    left:10px;
+}
+
+md-input-container .md-input.materialTxt{
+    border-color: #ccc;
+}
+
+md-input-container.md-input-invalid .md-input.materialTxt{
+    border-color: rgb(221,44,0);
+}
+
+md-input-container.md-input-invalid {
+    border-color: rgb(221,44,0);
+}
+
+md-input-container.md-input-focused label, md-input-container:not(.md-input-invalid).md-input-focused label, md-input-container:not(.md-input-invalid).md-input-has-value label{
+    color:#919191;
+}
+
+/* FOR COMBOBOX */
+
+md-input-container>md-select.materialCmb{
+    border-width: 1px;
+    border-radius: 4px;
+    border-style:solid;
+    border-color:#ccc;
+    padding: 1px 10px 1px;
+    height:50px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+md-input-container .md-placeholder{
+    display: none;
+}
+
+md-input-container>md-select .md-select-value{
+    border-bottom-style: none !important;
+    top:14%;
+    left:-3px;
+}
+
+md-input-container>md-select .md-select-icon{
+    position: relative;
+    top:-14%;
+    left:3px;
+}
+
+md-input-container>md-select .md-select-placeholder{
+    border-bottom-style: none !important;
+    top:0;
+    left:0;
+}
+
+md-input-container>md-select .md-select-placeholder .md-select-icon{
+    position: relative;
+    top:0;
+    left:0;
+}
+
+md-input-container.mdInputCmb{
+    width:100%;
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+md-input-container.md-input-focused:not([md-no-float]) .md-select-placeholder span:first-child{
+    transform: translateY(-10px) translateX(-2px) scale(.75)
+}
+
+md-input-container label:not(.md-no-float):not(.md-container-ignore).materialCmbLbl{
+    transform: translate3d(0, 15px, 0) scale(1);
+    font-weight: 500 !important;
+    bottom:63%;
+    left: 3%;
+}
+
+md-input-container.md-input-focused label:not(.md-no-float).materialCmbLbl{
+    transform: translate3d(0px, 12px, 0) scale(0.75);
+    left:10px;
+}
+
+md-input-container.md-input-has-value label:not(.md-no-float).materialCmbLbl {
+    transform: translate3d(0px, 13px, 0) scale(0.75);
+    left:10px;
+}
+
+md-input-container .md-input.materialCmb{
+    border-color: #ccc;
+}
+
+md-input-container.md-input-invalid .md-input.materialCmb{
+    border-color: rgb(221,44,0);
+}
+
+
+md-checkbox.md-checked .md-icon, md-checkbox.md-checked .md-ink-ripple{
+    background-color:#339385;
+    color:#339385;
+    border-radius: 4px;
+}
+md-checkbox.md-checked .md-icon, md-checkbox .md-icon{
+    border-radius: 4px;
+}
+md-checkbox .md-label{
+    font-weight: 400;
+}
+
+md-input-container:not(.md-input-has-value) md-select.ng-required .md-select-value span:first-child:after, md-input-container:not(.md-input-has-value) md-select[required] .md-select-value span:first-child:after, md-select.ng-required.ng-invalid .md-select-value span:first-child:after, md-select[required].ng-invalid .md-select-value span:first-child:after, md-input-container label:not(.md-container-ignore).md-required:after{
+    content:'';
+}
+.md-select-menu-container.md-active md-select-menu{
+    border-radius: 4px;
+}
+md-option{
+    height: 42px;
+}
+
+.texterrorspacing{
+    height: 10px;
+}
+
+
+/* manage account */
+
+.glyphicon-chevron-right:before{
+    color:#919191;
+}
+
+md-list-item._md-button-wrap>div.md-button:first-child{
+    padding:0;
+}
+
+.maHeader{
+    height:48px;
+    padding-top:13px;
+    font-weight: bold;
+}
+
+.btnSave{
+    /*width:20%;*/
+    height:40px;
+    width:140px;
+    min-width: 70px;
+    margin-right:20px;
+}
+.btnCancel{
+    font-size: 13px;
+    color:#535353;
+}
+
+@keyframes myChange {
+    from {
+        height: 100%;
+    } to {
+        height: 0;
+    }
+}
+
+#frmDetails{
+    -moz-transition: 1s;
+    -ms-transition: 1s;
+    -o-transition: 1s;
+    -webkit-transition: 1s;
+    transition: 1s;
+    overflow:hidden;
+}
+
+#frmDetails.ng-show{
+height:100px;
+}
+
+#frmDetails.ng-hide{
+height:0px;
+}
+
+.list-group-item, .list-group-item:focus{
+    border-width: 0px;
+    outline:none;
+}
+
+.glyphicon-chevron-right{
+    top:3px;
+}
+
+.listDivider{
+    margin:0 auto;
+    width:100%;
+    color:#dcdcdc;
+}
+
+/* :) */
+
+.btnLoading{
+    position: relative;
+    transition:all linear 0.5s
+}
+
+.btnLoading.ng-hide{
+    opacity:0;
+}
+
+.btnLoading:before{
+    position:absolute;
+    width:18px;
+    height:18px;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-radius:20px;
+    content:'';
+    top:10px;
+    left:60px;
+    animation: loading_animation 1s infinite linear;
+    z-index:1100;
+}
+
+.btnLoading:after{
+    content:" ";
+    display:block;
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:1050;
+}
+
+@keyframes loading_animation{
+    0% {transform: rotate(0deg); opacity:0.5;}
+    50% {transform: rotate(180deg); opacity:1; }
+    100% {transform: rotate(360deg); opacity:0.5; }
+}
+
+
+
+/* new designer michal*/
+
+.contentbox{
+    padding:30px 0 0 0;
+}
+
+.list-group{
+    margin-bottom:0;
+}
+
+.content a{
+    color:#535353;
+    text-decoration: none;
+}
+.content a:hover{
+    text-decoration: underline;
+}
+.content a:focus, .content a:active{
+    color:#339385;
+    text-decoration: underline;
+}
+.content a:disabled{
+    color:#c1c1c1;
+}
+
+.edit{
+    font-size: 13px;
+    color:#535353;
+}
+
+.sectionpadding{
+    margin-bottom: 20px;
+}
+
+.wpTextbox{
+    height: 40px;
+    width: 140px;
+    border: 1px solid #DCDCDC;
+    border-radius: 2px;
+}
+
+.wpTextbox:hover{
+    border: 1px solid #919191;
+}
+.wpTextbox:focus{
+
+}
+.wpTextbox:active{
+
+}
+.wpTextbox:disabled{
+    
+}
+
+md-input-container .md-input-message-animation.ngmsgtext{
+    position: relative;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div[class*="ngmsgbox"].ng-active{
+    background: #ffeff1;
+    border: solid;
+    border-radius: 0 0 4px 4px;
+    border-width: 0 1px 1px 1px;
+    /* height: 32px; */
+    width: 100%;
+    padding-left: 10px;
+}
+
+
+md-input-container .md-input.materialTxt.ng-touched ~ .ngmsg.ngactive{
+    border-color: rgb(38, 0, 255);
+}
+
+md-input-container .md-input.materialTxt{
+    border-radius: 4px;
+}
+md-input-container.md-input-invalid .md-input.materialTxt{
+    border-radius: 4px 4px 0 0;
+}
+
+.wpInput{
+    display: inline-block;
+    position: relative;
+    padding: 2px;
+    margin: 18px 0;
+    vertical-align: middle;
+}
+
+.wptextboxLbl{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    -webkit-box-ordinal-group: 2;
+    -webkit-order: 1;
+    order: 1;
+    pointer-events: none;
+    -webkit-font-smoothing: antialiased;
+    padding-left: 3px;
+    padding-right: 0;
+    z-index: 1;
+    -webkit-transform: translate3d(0,28px,0) scale(1);
+    transform: translate3d(0,28px,0) scale(1);
+    -webkit-transition: -webkit-transform .4s cubic-bezier(.25,.8,.25,1);
+    transition: -webkit-transform .4s cubic-bezier(.25,.8,.25,1);
+    transition: transform .4s cubic-bezier(.25,.8,.25,1);
+    transition: transform .4s cubic-bezier(.25,.8,.25,1),-webkit-transform .4s cubic-bezier(.25,.8,.25,1);
+    max-width: 100%;
+    -webkit-transform-origin: left top;
+    transform-origin: left top;
+    color:#919191;
+}
+
+.form-control-feedback{
+    top: 7px;
+    right: 7px;
+    
+}

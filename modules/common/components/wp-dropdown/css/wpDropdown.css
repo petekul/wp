@@ -1,0 +1,29 @@
+
+
+
+.dropdown .divider{
+    margin:0px;
+}
+
+.dropdown .titleItem{
+    color: #5a5a5a;
+    height:35px;
+    line-height:30px;
+    vertical-align:middle;
+}
+
+.dropdown-menu{
+    position:absolute;
+    top:30px;
+    width:100%;
+    padding:0px;
+}
+
+.dropdown-menu>li>a:hover{
+    color: #5a5a5a;
+    background-color:#efefef;
+}
+
+.dropdown-menu>li>a .selected{
+    background-color:#efefef;
+}

@@ -1,0 +1,3 @@
+**/*.min.js
+**/*.concat.js
+**/analytics/analytics.service.js

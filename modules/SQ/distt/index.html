@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="SSO.securityquestions">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+     <link rel="icon" href="../../../images/favicon.ico">
+
+    <title>For your security | Worldpay Account</title>
+
+
+      
+      <!--<link href="styles/main.css" rel="stylesheet">-->
+<!-- build:css css/securityquestions.min.css -->
+
+      <link href="../../resources/css/vendor/wpbootstrap/wp.bootstrap.min.css" rel="stylesheet">
+      <link href="../../resources/css/app/SSOTemplate.css" rel="stylesheet">
+      <link href="../common/components/loading/css/loading.css" rel="stylesheet">
+      <link href="../common/components/reset-password/css/resetPassword.css" rel="stylesheet">
+      <link href="../common/components/session-idle/css/sessionIdle.css" rel="stylesheet">
+      <link href="css/securityquestions.css" rel="stylesheet">
+      
+<!-- endbuild -->
+
+      <!--<link href="dist/css/securityquestions.min.css" rel="stylesheet">-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <!--Controller to load the backURL on page load-->
+    <div ng-controller="urlController">
+    <!--invisible div that to tell the context which we arrive at the app in-->
+    <div class="scm ftl"></div>
+
+    <!--Constant header throughout the angular app-->
+    <div ui-view="header"></div>
+    <!--Varying content depending on app state (pages)-->
+    <div ui-view="content"></div>
+    <!--Constant footer throughout the angular app-->
+    <div ui-view="footer"></div>
+
+    </div>
+    <!-- JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- build:js js/vendor.min.js -->
+
+    <script src="../../resources/js/vendor/jquery.min.js"></script>
+    <script src="../../resources/js/vendor/angular/angular.min.js"></script>
+    <script src="../../resources/js/vendor/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="../../resources/js/vendor/wpbootstrap/wp.bootstrap.min.js"></script>
+
+    <!-- endbuild -->
+    
+    <!--<script src="../common/dist/js/common.min.js"></script>-->
+    
+    <script src="app.js"></script>
+    <script src="../common/index/url.module.js"></script>
+    <script src="../common/index/js/url.controller.js"></script>
+    <script src="../common/index/js/url.service.js"></script>
+    <script src="../common/index/js/date.ctrl.js"></script>
+    
+
+    
+
+    <!-- build:js js/securityquestions.min.js -->
+    <script src="../common/components/session-idle/js/sessionIdle.module.js"></script>
+    <script src="../common/components/session-idle/js/sessionIdle.directive.js"></script>
+    <script src="../common/components/session-idle/js/sessionIdle.service.js"></script>
+
+    <script src="views/security-questions/securityquestions.serv.js"></script>
+    <script src="views/security-questions/securityquestions.ctrl.js"></script>
+    <script src="views/security-questions/accountdisabled.ctrl.js"></script>
+
+    <!-- endbuild -->
+
+    <script src="../common/components/analytics/analytics.module.js"></script>
+    <script src="../common/components/analytics/analytics.service.js"></script>
+    <script src="../common/components/analytics/analyticsConfig.service.js"></script>
+    
+    
+    <!--<script src="/sso/modules/common/error-pages/dist/js/errorpages.min.js"></script>-->
+
+    <!--<script src="dist/js/securityquestions.min.js"></script>-->
+    <!--<script src="dist/sq.concat.js"></script>-->
+    
+    <!--<script src="/sso/modules/common/components/session-idle/js/sessionIdle.min.js"></script>-->
+
+  </body>
+</html>

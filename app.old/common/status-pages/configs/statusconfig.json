@@ -1,0 +1,90 @@
+[
+	{
+		"status":"defaultURL",
+		"defaultURL":"http://mybusiness.sso.worldpaytd.local:7778/mbd.html"
+	},
+	{
+		"status":"",
+		"pageTitle":"Error | Worldpay Account",
+		"statusTitle":"Oops! Something went wrong",
+		"statusMsg":"An error occurred whilst processing your request. Please refresh the page or try again later.",
+		"buttonText":"OK"
+	},
+	{
+		"status":"500",
+		"pageTitle":"Error | Worldpay Account",
+		"statusTitle":"Oops! Something went wrong",
+		"statusMsg":"An error occurred whilst processing your request. Please refresh the page or try again later.",
+		"buttonText":"OK"
+	},
+	{
+		"status":"400",
+		"pageTitle":"Error | Worldpay Account",
+		"statusTitle":"Bad Request",
+		"statusMsg":"Your browser sent a request that the server could not understand. Please try again.",
+		"buttonText":"OK"
+	},
+	{
+		"status":"401",
+		"pageTitle":"Error | Worldpay Account",
+		"statusTitle":"Unauthorized",
+		"statusMsg":"Please try again with valid credentials to access this page.",
+		"buttonText":"OK"
+	},
+	{
+		"status":"403",
+		"pageTitle":"Error | Worldpay Account",
+		"statusTitle":"Forbidden Request",
+		"statusMsg":"Access denied. Permission is required to view this page.",
+		"buttonText":"OK"
+	},
+	{
+		"status":"404",
+		"pageTitle":"Error | Worldpay Account",
+		"statusTitle":"Not Found",
+		"statusMsg":"We can't seem to find the page you're looking for!",
+		"buttonText":"OK"
+	},
+	{
+		"status":"noSQinfo",
+		"pageTitle":"For your security | Worldpay Account",
+		"statusTitle":"For your security",
+		"statusMsg":"To confirm your identity we need to ask you some security questions. Unfortunately we do not have enough information about your account. Please contact our Customer Services team on <b>0345 761 62 63</b> to update your details. We will also reset your password for you, allowing you to login.",
+		"buttonText":"OK"
+	},
+	{
+		"status":"accountdisabled",
+		"pageTitle":"Account disabled | Worldpay Account",
+		"statusTitle":"Account disabled",
+		"statusMsg":"You have entered your security questions incorrectly too many times and your account has been disabled. Please call our Customer Services team on <b>0345 761 62 63</b> to reactivate your account.",
+		"buttonText":"OK"
+	},
+	{
+		"status":"sessiontimeout",
+		"pageTitle":"Session expired | Worldpay Account",
+		"statusTitle":"Session timeout",
+		"statusMsg":"Your session has expired. Please log in again to continue.",
+		"buttonText":"OK"
+	},
+	{
+		"status":"setupsuccessEmail",
+		"pageTitle":"Update your account | Worldpay Account",
+		"statusTitle":"Update your account",
+		"statusMsg":"<p>Thank you, your information has been updated successfully.</p><p>Your login ID has been changed to {{useremail}}. We have sent you an email to confirm this.</p><p>To continue, login below with your new email address and password.</p>",
+		"buttonText":"Login"
+	},
+	{
+		"status":"setupsuccessNonEmail",
+		"pageTitle":"Update your account | Worldpay Account",
+		"statusTitle":"Update your account",
+		"statusMsg":"Thank you, your information has been updated successfully. <br/><br/><p class='redirectMessage'>You will be automatically redirected in 5 seconds . . .</p>",
+		"buttonText":"Continue"
+	},
+	{
+		"status":"passwordChanged",
+		"pageTitle":"Password changed | Worldpay Account",
+		"statusTitle":"Password changed",
+		"statusMsg":"Your password changes have been saved successfully.",
+		"buttonText":"Login"
+	}
+]

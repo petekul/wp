@@ -1,0 +1,6 @@
+{
+	"contactDetailRequired":true,
+	"emailRequired":"true",
+	"passwordRequired":true,
+	"tcRequired":true
+}

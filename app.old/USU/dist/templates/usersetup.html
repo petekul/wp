@@ -1,0 +1,153 @@
+<div class="container theme-showcase" role="main" ng-controller="usuController">
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron" id="greybg"></div>
+  <div class="container-fluid" >
+    <div class="row">
+      <div class="col-xs-0 col-sm-2 col-md-2 col-lg-2" style="color:black"> </div>
+
+      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 contentbox">
+
+        <div class="loadingAnimation"></div>
+        <div class="content">
+            <h2 class="title text-center redtext">Update your account</h2>
+            <hr>
+            <p id="titletext">Before continuing please confirm the following details.</p>
+
+            <form name="ssoForm">
+    <!--CONTACT DETAILS SECTION-->
+              <div class="form-group" id="frmDetails">
+                <h3 class="redtext">Contact details</h3>
+                <hr class="short pull-left"><br/>
+                <p id="subtitle">This information will be used to address you in any future communications.</p>
+                  <!--dropdown menu TODO TAKE MBD custom dropdown-->
+                <div class="row">
+                  <div class="col-xs-6">
+
+                    <md-input-container class="mdInputCmb">
+                      <label class="materialCmbLbl">Title</label>
+                      <md-select class="materialCmb" id="cmbTitle" ng-model="title" ng-change="onChange('Title')" ng-blur="checkTitleSelected()" name="type" required hideRequiredMarker>
+                        <md-option value="mr">Mr</md-option>
+                        <md-option value="mrs">Mrs</md-option>
+                        <md-option value="miss">Miss</md-option>
+                        <md-option value="ms">Ms</md-option>
+                        <md-option value="dr">Dr</md-option>
+                        <md-option value="prof">Prof</md-option>
+                      </md-select>
+                    </md-input-container>
+
+                    <md-input-container class="mdInput">
+                      <label class="materialLbl">First name</label>
+                      <input class="materialTxt" id="txtFirstname" required name="firstName" ng-model="firstname" ng-change="onChange('Firstname')" ng-keypress="validateInput()" minlength="2" maxlength="50" md-no-asterisk>
+                      <div ng-messages="ssoForm.firstName.$error" ng-show="ssoForm.firstName.$dirty">
+                        <div ng-message-exp="['required', 'minlength']"><!--This is required.--></div>
+                      </div>
+                    </md-input-container>
+
+                    <md-input-container class="mdInput">
+                      <label class="materialLbl">Surname</label>
+                      <input class="materialTxt" id="txtLastname" required name="lastName" ng-model="lastname" ng-change="onChange('Lastname')" ng-keypress="validateInput()" minlength="2" maxlength="50"  md-no-asterisk>
+                      <div ng-messages="ssoForm.lastName.$error" ng-show="ssoForm.lastName.$dirty">
+                        <div ng-message-exp="['required', 'minlength']"><!--This is required.--></div>
+                      </div>
+                    </md-input-container>
+
+                  </div>
+                  <div class="col-xs-1">
+                      <span class="glyphicon glyphicon-ok incomplete" id="tickTitle"></span>
+                      <span class="glyphicon glyphicon-ok incomplete" id="tickFirstname"></span>
+                      <span class="glyphicon glyphicon-ok incomplete" id="tickLastname"></span>
+                  </div>
+                </div>
+              </div>
+    <!--EMAIL ADDRESS SECTION-->
+
+              <div class="form-group" id="frmEmail">
+                <h3 class="redtext">Your email address</h3>
+                <hr class="short pull-left"><br/>
+                <p id="subtitle">Enter your email address below. This will become your new username.</p>
+
+                <div class="row">
+                  <div class="col-xs-6">
+
+                      <md-input-container class="md-block mdInput">
+                        <label class="materialLbl lblNewEmail">New email</label>
+                        <input class="materialTxt" ng-required="!emailDisabled" type="email" name="newEmail" ng-model="newemail" ng-change="onChange('NewEmail')" ng-blur="validOnBlur('NewEmail')" ng-focus="hideOnFocus('NewEmail')" 
+                        id="txtNewEmail" oncopy="return false" onpaste="return false" maxlength="100" emailregex ng-pattern="/^[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@([a-zA-Z0-9])[a-zA-Z0-9-_']{1,}((\.)([a-zA-Z0-9])([a-zA-Z0-9-_']{1,}))+/" md-no-asterisk/>
+
+                        <div ng-messages="ssoForm.newEmail.$error" ng-show="ssoForm.newEmail.$dirty && ssoForm.newEmail.$touched" role="alert">
+                          <div ng-message-exp="['maxlength', 'pattern']">
+                            Invalid email address.
+                          </div>
+                          <div ng-message="required">
+                            <!--This is required.-->
+                          </div>
+                        </div>
+                      </md-input-container>
+
+                        <md-input-container class="md-block mdInput">
+                        <label class="materialLbl lblConfirmEmail">Confirm email</label>
+                        <input class="materialTxt" ng-required="!emailDisabled" type="email" name="confirmEmail" ng-model="confirmemail" ng-change="onChange('ConfirmEmail')" ng-blur="validOnBlur('ConfirmEmail')" ng-focus="hideOnFocus('ConfirmEmail')" 
+                        id="txtConfirmEmail" oncopy="return false" onpaste="return false" maxlength="100" md-no-asterisk emailmatch />
+
+                        <div ng-messages="ssoForm.confirmEmail.$error" ng-show="ssoForm.confirmEmail.$dirty" role="alert">
+                          <div ng-message-exp="['maxlength', 'emailmatch']">
+                            Email addresses do not match.
+                          </div>
+                          <div ng-message="required">
+                            <!--This is required.-->
+                          </div>
+                        </div>
+                      </md-input-container>
+
+                  </div>
+                  <div class="col-xs-1">
+                      <span class="glyphicon glyphicon-ok incomplete" id="tickNewEmail"></span>
+                      <span class="glyphicon glyphicon-ok incomplete" id="tickConfirmEmail"></span>
+                  </div>
+                </div>
+                <p id="errorEmail">This email address cannot be used, please enter a new email address.</p>
+              </div>
+    <!--CREATE NEW PASSWORD SECTION-->
+              <div class="form-group" id="frmPassword">
+                <h3 class="redtext">Create new password</h3>
+                <hr class="short pull-left"><br/>
+                <p id="subtitle">For security reasons, you must set a new password to use when logging in.</p>
+                <reset-password password-title="'Create new password'"
+                            password-subtitle="'For security reasons, you must set a new password to use when logging in.'"
+                            ng-model="pass" ng-change="onChange('Password')">
+                </reset-password>
+                <p id="errorPassword">New password must not match current password.</p>
+              </div>
+    <!--TERMS AND CONDITIONS-->
+              <div class="form-group col-xs-12" id="frmTerms">
+                <div class="input-group">
+                  <!--<label for="ckbTerms">
+                    <input type="checkbox" id="ckbTerms" aria-label="..." ng-model="terms" ng-change="onChange('Terms')">
+                    <span id="lblTerms">I confirm that I have read and agree to the <a href="https://mybusiness.worldpay.com/terms-of-use">terms of use</a> and <a href="https://mybusiness.worldpay.com/cookie-policy">cookie policy.</a></label>
+                  </label>-->
+                  <label for="ckbTerms">
+                    <md-checkbox id="ckbTerms" aria-label="..." ng-model="terms" ng-change="onChange('Terms')">
+                      I confirm that I have read and agree to the <a href="https://mybusiness.worldpay.com/terms-of-use" target="_blank">terms of use</a> and <a href="https://mybusiness.worldpay.com/cookie-policy" target="_blank">cookie policy.</a>
+                    </md-checkbox>
+                  </label>  
+                </div><!-- /input-group -->
+              </div>
+              
+                  
+              <button type="submit" id="btnUSUContinue" ng-click="submitForm()" class="btn btn-success" disabled>Continue</button>
+
+            </form>
+        </div>
+
+      <div class="col-xs-0 col-sm-2 col-md-2 col-lg-2"></div>
+  </div>
+
+      <!--<button ng-click="hideSection('frmDetails')" class="btn btn-success">hide Details</button>-->
+      <!--<button ng-click="hideSection('frmEmail')" class="btn btn-success">hide Email</button>-->
+      <!--<button ng-click="hideSection('frmPassword')" class="btn btn-success">hide Pass</button>-->
+      <!--<button ng-click="hideSection('frmTerms')" class="btn btn-success">hide T&C</button>-->
+
+    <session-idle></session-idle>
+
+
+</div> <!--main container-->

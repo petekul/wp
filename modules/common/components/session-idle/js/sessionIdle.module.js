@@ -1,0 +1,1 @@
+var app = angular.module("SSO.sessionIdle", ["SSO.url"]);

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="SSO.securityquestions">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+     <link rel="icon" href="../../../resources/assets/images/favicon.ico">
+    <title>For your security | Worldpay Account</title>
+
+    <!--<link href="styles/main.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="../../../resources/css/vendor/wpbootstrap/wp.bootstrap.min.css">
+    <link rel="stylesheet" href="css/sq.min.css">
+    <!-- <link href="css/sq.min.css" rel="stylesheet"> -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <!--Controller to load the backURL on page load-->
+    <div ng-controller="urlController">
+    <!--invisible div that to tell the context which we arrive at the app in-->
+    <div class="scm ftl"></div>
+
+    <!--Constant header throughout the angular app-->
+    <div ui-view="header"></div>
+    <!--Varying content depending on app state (pages)-->
+    <div ui-view="content"></div>
+    <!--Constant footer throughout the angular app-->
+    <div ui-view="footer"></div>
+
+    </div>
+    <!-- JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="js/sq.min.js"></script>
+
+    <!-- <script src="js/vendor.concat.js"></script> -->
+
+    <!-- <script src="js/common.min.js"></script> -->
+
+    <!-- <script src="js/sq.min.js"></script> -->
+  </body>
+</html>

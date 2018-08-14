@@ -1,0 +1,24 @@
+/* WP Bootstrap */
+@import url("wpbootstrap/wp.bootstrap.min.css");
+/*@import url("wpbootstrap/wp.bootstrap-theme.min.css");
+
+/* Global CSS */
+@import url("SSOpages.css");
+
+
+/* Assets | Directives */
+@import url("../views/assets/reset-password/css/resetPassword.css");
+@import url("../views/assets/wp-dropdown/css/wpDropdown.css");
+@import url("../views/assets/loading/css/loading.css");
+@import url("../views/assets/session-idle/css/sessionIdle.css");
+
+
+/* Create new password Page */
+@import url("../views/choose-new-password/choosenewpassword.css");
+
+/* Status pages */
+@import url("../views/status-pages/statuspages.css");
+
+/* Error pages */
+@import url("../views/error-pages/errorpages.css");
+
