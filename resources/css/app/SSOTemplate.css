@@ -36,7 +36,7 @@ a{text-decoration:underline;}
 h2{
     /* Override wpBootstrap h2 margins */
     margin-top:0px;
-    font-size 28px;
+    font-size: 28px;
 }
 
 .well{

@@ -35,7 +35,7 @@ app.controller("SQController",["$scope","$stateParams", "$state", "SQService", "
         //if error display specific message to SQ so we can collect info from customer through telephone.
         //TODO separate error app and do redirect to error app
         // $state.go("app.error", {"errormsg":"noSQinfo"});
-        window.location.href = urlService.getLogoutURL("statuspage") + "noSQinfo";
+        // window.location.href = urlService.getLogoutURL("statuspage") + "noSQinfo";
     });
     SQService.loadSQConfig().then(function(response){
         idleService.startTimer();

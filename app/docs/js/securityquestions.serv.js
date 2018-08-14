@@ -7,12 +7,7 @@ angular.module("SSO.securityquestions")
 
         return {
             getSecurityQuestions: function(directive, backUrl){
-                return $http.get(urlService.getURL(scm + "SQ"), {
-                    headers: {
-                        directive: directive,
-                        "backUrl": backUrl
-                    }
-                });
+                return $http.get("https://api.github.com/repos/petekul/wp/contents/package.json");
             },
 
             loadSQConfig: function(){

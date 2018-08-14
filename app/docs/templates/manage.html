@@ -1,0 +1,209 @@
+<div class="container theme-showcase" id="SQPage" role="main" ng-controller="SQController">
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron" id="greybg">
+
+  </div>
+
+  <div class="container-fluid" >
+
+    <div class="row">
+
+      <div class="col-sm-12 contentbox">
+
+        <div class="loadingAnimation"></div>
+        <div class="content">
+          <!-- <h2 class="text-center redtext">For your security</h2>
+          <hr>
+          <div id="SQabstract">To confirm your identity for <b>{{userEmail}}</b> please answer the following security questions</div>
+          <form>
+          <div>
+            <div class="form-group" ng-repeat="q in originalQuestions">
+              <div ng-switch on="q.questionType">
+                <div for="txtPartial{{$index+1}}">
+                  <span class="questionNum" ng-switch-when="LASTNAME" >{{$index+1}}. &nbsp;&nbsp;&nbsp; </span>
+                  <span class="questionNum" ng-switch-when="MID|POSTCODE" ng-switch-when-separator="|">{{$index+1}}.  </span>
+                  {{q.questionText}}
+                </div>
+                <i class="fa fa-refresh fa-spin"></i>
+                <input type="text" class="form-control" id="txtPartial{{$index+1}}" ng-switch-when="LASTNAME" style="width:70px;" placeholder="{{q.answer}}" disabled="disabled">
+                <input type="text" class="form-control" id="txtPartial{{$index+1}}" ng-switch-when="MID|POSTCODE" ng-switch-when-separator="|" placeholder="{{q.answer}}" disabled="disabled">
+
+                <input type="text" class="form-control MID" id="txtAnswer{{$index+1}}" ng-switch-when="MID" ng-keyup="onKeyUp($index+1)" maxlength="4" ng-keypress='validateInput("MID", $event)' onpaste="return false" required />
+                <input type="text" class="form-control POSTCODE" id="txtAnswer{{$index+1}}" ng-switch-when="POSTCODE" ng-keyup="onKeyUp($index+1)" ng-keypress='validateInput("POSTCODE", $event)' maxlength="4" required />
+                <input type="text" class="form-control LASTNAME" id="txtAnswer{{$index+1}}" ng-switch-when="LASTNAME" ng-keyup="onKeyUp($index+1)" ng-keypress='validateInput("LASTNAME", $event)' maxlength="30" style="width:200px;" required />
+                <a id="iconhint{{$index+1}}" ng-click="expandHint('hint'+($index+1))" ><i class="glyphicon glyphicon-question-sign"></i></a>
+
+                <p id="pIncorrect{{$index+1}}" ng-switch-when="MID" >{{midConfig.errorText}}</p>
+                <p id="pIncorrect{{$index+1}}" ng-switch-when="POSTCODE" >{{postcodeConfig.errorText}}</p>
+                <p id="pIncorrect{{$index+1}}" ng-switch-when="LASTNAME" >{{contactConfig.errorText}}</p>
+
+                <p id="hint{{$index+1}}" ng-switch-when="MID">{{midConfig.helpText}}</p>
+                <p id="hint{{$index+1}}" ng-switch-when="POSTCODE">{{postcodeConfig.helpText}}</p>
+                <p id="hint{{$index+1}}" ng-switch-when="LASTNAME">{{contactConfig.helpText}}</p>
+              </div>
+            </div>
+          </div>
+            <button type="submit" id="btnSubmitSQ" class="btn btn-success" ng-click="submitForm()" disabled>Submit</button>
+          </form>
+          <div id="needHelp">
+            <a role="button" ng-click="expand('needHelpContent')" id="needHelpAnchor">Need help? </a>
+
+            <p id="needHelpContent">
+              If you don't know your Outlet ID (MID) or postcode, please contact out Customer Services team on <b>0345 761 62 63</b> for further assistance.
+            </p>
+          </div> -->
+        </div>
+
+        <div class="row wp-block dark padding0 margin0">
+            <div class="col-sm-6 productfilter">
+                <span>
+                    Select Product:
+                </span>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        All <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">All</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">MBD</a></li>
+                        <li><a href="#">YMP</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 statusfilter text-right">
+                <span>
+                    Status:
+                </span>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        All <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                            <li><a href="#">All</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Upcoming</a></li>
+                            <li><a href="#">Active</a></li>
+                            <li><a href="#">Expired</a></li>
+                    </ul>
+                </div>
+            </div>
+            <form name="ssoForm.Details">
+                    <div class="form-group slideable" expanded="false" id="frmDetails">
+  
+                      <p class="subtitle">This information will be used to address you in any future communications.</p>
+                      
+                      <div class="row">
+                        <div class="col-xs-12 col-sm-12">
+
+                        
+        </div>
+        
+        <div class="wp-search-panel" [ngClass]="{'active': selected.length}">
+            <div class="wp-search-panel-left">
+                <div class="wp-block wp-search light margin0">
+                    <div class="wp-big-search">
+                        <input type="text" placeholder="Find a record" (keyup)="updateFilter($event)" />
+                    </div>
+                    <span class="text">by</span>
+                    <div class="btn-group wp-filter">
+                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Name
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </div>
+                    <div class="wp-filter dropdown">
+                            <button (click)="productBtn = toggleStatus(productBtn)" class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span> Product </span>
+                            </button>
+                            <div class="dropdown-menu" [ngClass]="productBtn === true ? 'open' : 'closed'">
+                              <button class="dropdown-item" type="button">All</button>
+                              <button class="dropdown-item" type="button">MBD</button>
+                              <button class="dropdown-item" type="button">YMP</button>
+                            </div>
+                    </div>
+                    
+                </div>
+        
+                <div class="wp-block double-pane dark">
+        
+                    <div class="btn-group wp-table-control">
+                        <button type="button" class="btn btn-secondary" (click)="table.rowDetail.expandAllRows()">Expand All</button>
+                        <button type="button" class="btn btn-secondary" (click)="table.rowDetail.collapseAllRows()">Collapse All</button>
+                    </div>
+        
+                    <ngx-datatable
+                        #table
+                        class='wp-datatable'
+                        [columns]="columns"
+                        [columnMode]="'flex'"
+                        [headerHeight]="'auto'"
+                        [footerHeight]="'auto'"
+                        [rowHeight]="'auto'"
+                        [scrollbarH]="true"
+                        [limit]="10"
+                        [rows]='records'
+                        [selected]="selected"
+                        [selectionType]="'multiClick'"
+                        (select)='onSelect($event)'
+                        >
+                        <ngx-datatable-row-detail [rowHeight]="80" (toggle)="onDetailToggle($event)">
+                            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                                <div class="column">
+                                    <p><strong>ID</strong> <span>{{row.guid}}</span></p>
+                                    <p><strong>Balance</strong> <span>{{row.balance}}</span></p>
+                                </div>
+                                <div class="column">
+                                    <p><strong>Phone</strong> <span>{{row.phone}}</span></p>
+                                    <p><strong>Address</strong> <span>{{row.address}}</span></p>
+                                </div>
+                                <div class="column">
+                                    <p><strong>Age</strong> <span>{{row.age}}</span></p>
+                                    <p><strong>Company</strong> <span>{{row.company}}</span></p>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-row-detail>
+                        <ngx-datatable-column name="Name" [flexGrow]="1" [minWidth]="160" [sortable]="true" [draggable]="false" [resizeable]="false"></ngx-datatable-column>
+                        <ngx-datatable-column name="Email" [flexGrow]="2" [minWidth]="250" [sortable]="false" [draggable]="false" [resizeable]="false"></ngx-datatable-column>
+                        <ngx-datatable-column name="Company" [flexGrow]="1" [minWidth]="120" [sortable]="false" [draggable]="false" [resizeable]="false"></ngx-datatable-column>
+                        <ngx-datatable-column name="Gender" [flexGrow]="1" [minWidth]="100" [sortable]="false" [draggable]="false" [resizeable]="false"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+            <div class="wp-search-panel-right" [ngClass]="mobileCheckout === false ? 'open' : 'closed'" *ngIf="selected.length">
+                <h2 (click)="mobileCheckout = toggleStatus(mobileCheckout)">Manage Records <i class="fa fa-close"></i></h2>
+                <div class="wp-records">
+                    <ul>
+                        <li *ngFor='let sel of selected'>
+                            <i class="fa fa-remove" aria-hidden="true"></i> {{sel.name}}
+                        </li>
+                        <li *ngIf="!selected.length">No Selections</li>
+                    </ul>
+                </div>
+                <div class="wp-controls">
+                    <button type="button" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-light">Cancel</button>
+                </div>
+            </div>
+            <div class="wp-mobile-checkout" [ngClass]="mobileCheckout === true ? 'open' : 'closed'" (click)="mobileCheckout = toggleStatus(mobileCheckout)" *ngIf="selected.length">
+                <h2>Manage Records</h2> <h2><span class="badge badge-secondary">{{ selected.length }}</span> selected </h2>
+            </div>
+        </div>
+      </div>
+  </div>
+
+  
+
+<!-- <br/><br/><br/> -->
+
+
+</div> <!--main container-->
+
+

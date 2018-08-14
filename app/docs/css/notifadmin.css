@@ -1,3 +1,101 @@
+body, #greybg{
+    background-color:#fff;
+    font-size:15px;
+}
+
+.jumbotron{
+    padding:0;
+}
+a:hover{
+    text-decoration:none;
+}
+
+a{text-decoration:underline;}
+
+.navbar-default{
+    background-color: #fff;
+    border-color: unset;
+}
+.navbar a{text-decoration:none;}
+.navbar .divider-vertical {
+    height: 20px;
+    margin: 15px 0;
+    border: 1px solid #dcdcdc;
+}
+
+h2{
+    /* Override wpBootstrap h2 margins */
+    margin-top:0px;
+    font-size: 28px;
+}
+
+.redtext{
+    color:#f01e14;
+}
+#greytext{
+    color:grey;
+    font-size:9.5pt;
+    margin-bottom:20px;
+}
+.contentbox{
+    background-color:#EFEFEF;
+    padding:30px;
+    margin-bottom:30px;
+    border-radius: 4px;
+}
+.content{
+    display:none;
+}
+#logoBanner{
+    margin-top:82px;
+    margin-right:15px;
+}
+
+hr{
+    display: block;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom:30px;
+    border-style: solid;
+    border-width: 1px;
+    width:110px;
+}
+hr.short{
+    margin:0;
+    width:60px;
+
+}
+
+
+.padding-0{
+    padding-left:0;
+    padding-right: 0;
+}
+
+
+.btn-success{
+    border-color: #5ba89d;
+    border-radius: 4px;
+}
+
+
+.navbar-collapse.collapse {
+  display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+  float: right !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+  margin-right: -15px !important;
+}
+
+.navbar-right {
+  float: right!important;
+}
+
 input[id^="txtPartial"]{
     background-color:#f2f2f2 !important;
     width:60px;
@@ -100,4 +198,17 @@ p[id^="pIncorrect"]{
 
 .txtContactSurname{
     width: 200px;
+}
+
+
+
+
+
+
+
+
+/* NEW STYLES */
+
+.dropdown-menu>li>a{
+    text-decoration: none;
 }

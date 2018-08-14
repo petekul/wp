@@ -11,10 +11,7 @@ angular.module("SSO.securityquestions",["ui.router", "SSO.url", "SSO.sessionIdle
                         templateUrl: "templates/header.html"
                     },
                     "content": {
-                        templateUrl: "templates/securityquestions.html"
-                    },
-                    "footer": {
-                        templateUrl: "templates/footer.html"
+                        templateUrl: "templates/manage.html"
                     }
                 },
                 onEnter: ['$window', function($window){
@@ -25,7 +22,7 @@ angular.module("SSO.securityquestions",["ui.router", "SSO.url", "SSO.sessionIdle
             .state("app.accountdisabled", {
                 views: {
                     "content@": {
-                        templateUrl: "accountdisabled.html"
+                        templateUrl: "create.html"
                     }
                 },
                 onEnter: ['$window', function($window){
