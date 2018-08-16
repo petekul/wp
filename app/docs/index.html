@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en" ng-app="SSO.securityquestions">
+<html lang="en" ng-app=app>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,7 +11,7 @@
     <!-- build:[href] ../resources/images/favicon.ico -->
      <link rel="icon" href="../../resources/assets/images/favicon.ico">
     <!-- /build -->
-    <title>For your security | Worldpay Account</title>
+    <title>Alerts Admin Tool</title>
 
     <!-- build:css ../resources/css/vendor/wpbootstrap/wp.bootstrap.min.css -->
       <link href="../../resources/css/vendor/wpbootstrap/wp.bootstrap.min.css" rel="stylesheet">
@@ -38,55 +38,35 @@
 
   <body>
 
-    <!--Controller to load the backURL on page load-->
-    <div ng-controller="urlController">
-    <!--invisible div that to tell the context which we arrive at the app in-->
-    <div class="scm ftl"></div>
-
-    <!--Constant header throughout the angular app-->
-    <div ui-view="header"></div>
-    <!--Varying content depending on app state (pages)-->
-    <div ui-view="content"></div>
-
-    </div>
+        <!--Constant header throughout the angular app-->
+        <div ui-view="header"></div>
+        <!--Varying content depending on app state (pages)-->
+        <div ui-view="content"></div>
+    
     <!-- JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
     <!-- build:js js/sq.min.js -->
     <script src="../../resources/js/vendor/jquery.min.js"></script>
-    <script src="../../resources/js/vendor/angular/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.js"></script>
     <script src="../../resources/js/vendor/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="../../resources/js/vendor/wpbootstrap/wp.bootstrap.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-messages.min.js"></script>
-    <script src="../../resources/js/vendor/angular-sanitize/angular-sanitize.min.js"></script>
-    
-    <script src="https://swimlane.github.io/angular-data-table/lib/dataTable.helpers.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-messages.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-sanitize.min.js"></script>
 
     <!-- Angular Material Library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.js"></script>
 
-    <script src="../common/index/url.module.js"></script>
-    <script src="../common/index/js/url.controller.js"></script>
-    <script src="../common/index/js/url.service.js"></script>
-    <script src="../common/index/js/date.ctrl.js"></script>
+    <script src="https://swimlane.github.io/angular-data-table/lib/dataTable.helpers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js"></script>
     
-    <script src="../common/components/session-idle/js/sessionIdle.module.js"></script>
-    <script src="../common/components/session-idle/js/sessionIdle.directive.js"></script>
-    <script src="../common/components/session-idle/js/sessionIdle.service.js"></script>
 
-    <script src="../common/components/analytics/analytics.module.js"></script>
-    <script src="../common/components/analytics/analytics.service.js"></script>
-    <script src="../common/components/analytics/analyticsConfig.service.js"></script>
 
     <script src="app.js"></script>
-    <script src="js/securityquestions.serv.js"></script>
-    <script src="js/securityquestions.ctrl.js"></script>
-    <script src="js/accountdisabled.ctrl.js"></script>
-
+    <script src="jsonService.serv.js"></script>
     <!-- /build -->
 
     <!-- <script src="js/vendor.concat.js"></script> -->
