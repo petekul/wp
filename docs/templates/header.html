@@ -4,33 +4,16 @@
       <div class="container">
 
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav pull-left">
+          <ul class="nav navbar-nav pull-left" ng-controller="chooseController">
 
-            <li><a role="button" ui-sref="app">Manage</a></li>
-            <li><div class='divider-vertical'></div></li>
-            <li><a role="button" tabindex="0" ui-sref="app.create">Create</a></li>
+            <li><a role="button" class='chooseheader active' ng-click="active('chooseheader')" ui-sref="app">Choose file</a></li>
+            <li><a role="button" class='manageheader ' ng-click="active('manageheader')" ui-sref="app.manage">Manage</a></li>
+            <li><a role="button" class='createheader ' ng-click="active('createheader')" ui-sref="app.create">Create</a></li>
 
           </ul>
-          <ul class="nav navbar-nav pull-right">
-
-              <li><div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Choose File <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                      <li><a href="#">alerts.json</a></li>
-                      <li role="separator" class="divider"></li>
-                      <li><a href="#">alerts_PPE.json</a></li>
-                      <li><a href="#">alerts_PROD.json</a></li>
-                  </ul>
-              </div></li>
-  
-            </ul>
+          <ul class="nav navbar-nav pull-right" ng-controller="createController">
+              <li><a class="downloadlink" ng-click="saveJSON()" role="button" >Download file</a></li>
+          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <div class="container">
-      <div class="pull-right" id="logoBanner">
-        <img src="/sso/resources/assets/images/Worldpay.png">
-      </div>
-    </div>

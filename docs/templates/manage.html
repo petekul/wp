@@ -2,15 +2,21 @@
 
     <div class="col-sm-12 contentbox">
 
+        <div class="error">
+
+            <div class="row manageerror dark padding0 margin0">
+                Error: Please choose a file from the choose file tab first.
+            </div>
+
+        </div>
         <div class="content">
-            <div class="row wp-block dark padding0 margin0">
+
+            <div class="row firstrow dark padding0 margin0">
 
 
                 <div class="col-sm-6 productfilter">
-                    <span>
-                        Select Product:
-                    </span>
                     <md-input-container>
+                        <h4 class="divLabel">Product</h4>
                         <md-select ng-model="selectedProduct" md-selected-text="getSelectedProduct()" aria-label="select product">
                             <md-optgroup label="products">
                             <md-option ng-repeat="product in products" ng-value="product">{{product}}</md-option>
@@ -21,10 +27,8 @@
                 </div>
 
                 <div class="col-sm-6 statusfilter text-right">
-                    <span>
-                        Status:
-                    </span>
                     <md-input-container>
+                        <h4 class="divLabel">Filter</h4>
                         <md-select ng-model="selectedStatus" md-selected-text="getSelectedStatus()" aria-label="select status">
                             <md-optgroup label="statuses">
                             <md-option ng-repeat="status in statuses" ng-value="status">{{status}}</md-option>
@@ -35,11 +39,15 @@
       
             </div>
         
-        <dtable options="options" rows="data" class="material"></dtable>
-        
-        <button type="submit" id="btnSubmitSQ" class="btn btn-success" ng-click="edit()">Test</button>
+            <dtable options="options" rows="data"  on-row-click="onRowClick(row)" class="material" on-select="onSelect(row)" selected="selected"></dtable>
+            
+            <div class="pull-right">
+                <button type="submit" id="btnEdit" class="btn btn-success" ng-click="edit()">Edit</button>
+                <button type="submit" id="btnDelete" class="btn btn-success" ng-click="delete()">Delete</button>
+            </div>
         </div>
     </div>
+</div>
 
   
 

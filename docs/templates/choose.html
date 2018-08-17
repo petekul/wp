@@ -1,0 +1,30 @@
+<div class="container theme-showcase" id="choosePage" role="main" ng-controller="chooseController">
+
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 contentbox">
+
+        <div class="content">
+                <div class="col-sm-12 choosefile">
+                    <h3> Choose a File:</h3>
+                    <br/>
+                    <md-radio-group ng-model="file">
+
+                    <md-radio-button value="td" class="md-warn">ALERTS_td.json</md-radio-button>
+                    <md-radio-button value="ppe" class="md-warn">ALERTS_ppe.json</md-radio-button>
+                    <md-radio-button value="prod" class="md-warn">ALERTS_prod.json</md-radio-button>
+
+                    </md-radio-group>
+                </div>  
+        <button type="submit" id="btnContinue" class="btn btn-success pull-right" ng-click="continue()">Continue</button>
+        </div>
+    </div>
+    <div class="col-sm-3"></div>
+
+  
+
+<!-- <br/><br/><br/> -->
+
+
+</div> <!--main container-->
+
+

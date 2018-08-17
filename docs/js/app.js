@@ -11,6 +11,17 @@ module.config(["$stateProvider", "$urlRouterProvider", "$mdDateLocaleProvider", 
                         templateUrl: "templates/header.html"
                     },
                     "content": {
+                        templateUrl: "templates/choose.html"
+                    }
+                },
+                onEnter: ['$window', function($window){
+                    $window.document.title = "Choose a file | Alerts Admin Tool";
+                }]
+            })
+
+            .state("app.manage", {
+                views: {
+                    "content@": {
                         templateUrl: "templates/manage.html"
                     }
                 },
@@ -30,7 +41,6 @@ module.config(["$stateProvider", "$urlRouterProvider", "$mdDateLocaleProvider", 
                 }]
             });
 
-
 //    $urlRouterProvider.otherwise("/");
         $urlRouterProvider.otherwise(function($injector, $location){
             $injector.invoke(["$state", function($state) {
@@ -43,7 +53,7 @@ module.config(["$stateProvider", "$urlRouterProvider", "$mdDateLocaleProvider", 
     //    * @returns {string} string representation of the provided date
     //    */
       $mdDateLocaleProvider.formatDate = function(date) {
-        return date ? moment(date).format('L') : '';
+        return date ? moment(date).format('DD/MM/YYYY') : '';
       };
   
     //   /**
@@ -57,44 +67,97 @@ module.config(["$stateProvider", "$urlRouterProvider", "$mdDateLocaleProvider", 
 
     }]);
 
+module.controller('chooseController', function($scope, $http, $state, jsonService) {
+    $scope.file='td';
+    $scope.continue = function(){
+        if($scope.file == 'td'){
+            jsonService.setFilename('ALERTS_td.json');
+        }
+        if($scope.file == 'ppe'){
+            jsonService.setFilename('ALERTS_ppe.json');
+        }
+        if($scope.file == 'prod'){
+            jsonService.setFilename('ALERTS_prod.json');
+        }
+        $state.go('app.manage');
+    };
+
+    $scope.active = function(elem){
+        var headers = ['.chooseheader', '.manageheader', '.createheader'];
+        for(var n=0;n<headers.length;n++){
+            if(headers[n] != elem){
+                $(headers[n]).removeClass('active');
+            }
+        }
+        $('.' +elem).addClass('active');
+    };
+});
+
 module.controller('manageController', function($scope, $http, $state, jsonService) {
 
     // $http.get('https://api.github.com/repos/petekul/wp/contents/alerts.json').success(function(data) {
     // var alerts = JSON.parse(atob(data.content));
 
-    var testmode = false;
+    var testmode = true;
     if(!testmode){
-        jsonService.getJSON().success(function(data) {
+        jsonService.getJSON(jsonService.getFilename()).success(function(data) {
+            $('.manageerror').css("display","none");
+            $('.content').css("display","block");
             var jsondata = JSON.parse(atob(data.content));
             var originaljsondata = jQuery.extend(true, {}, jsondata);
 
             jsonService.setSha(data.sha);
             jsonService.setOriginalJSON(originaljsondata);
+            jsonService.setUpdatedJSON(originaljsondata);
             $scope.alerts = transformData(jsondata);
-            $scope.allalerts = $scope.alerts.mybusiness.concat($scope.alerts.yourmarketplace);
+            $scope.allalerts = $scope.alerts.mybusiness.concat($scope.alerts.yourmarketplace).concat($scope.alerts.iservice);
 
             $scope.data = $scope.allalerts;
+
+           
+        }).error(function(err) {
+            // showError();
+            $('.manageerror').css("display","block");
+            $('.content').css("display","none");
         });
     }
     else{
-        $http.get('/wp-notif-admin/alerts.json').success(function(data) {
+        $http.get('/wp-notif-admin/' + jsonService.getFilename()).success(function(data) {
 
+            $('.manageerror').css("display","none");
+            $('.content').css("display","block");
             // $scope.originalQuestions = jQuery.extend(true, [], $scope.questions);
+
+            var originaljsondata = jQuery.extend(true, {}, data);
+            jsonService.setOriginalJSON(originaljsondata);
+            jsonService.setUpdatedJSON(originaljsondata);
             $scope.alerts = transformData(data);
-            $scope.allalerts = $scope.alerts.mybusiness.concat($scope.alerts.yourmarketplace);
+            $scope.allalerts = $scope.alerts.mybusiness.concat($scope.alerts.yourmarketplace).concat($scope.alerts.iservice);
 
             $scope.data = $scope.allalerts;
+
+        }).error(function(err) {
+            //showError();
+            $('.manageerror').css("display","block");
+            $('.content').css("display","none");
+
         });
     }
+    
     $scope.edit = function(){
-      console.log('yes');  
+        console.log('yes');  
         $scope.data = $scope.alerts.yourmarketplace;
+    };
+
+    $scope.delete = function(){
+        var originaljson = jsonService.getOriginalJSON();
+        var selected = $scope.selected;
     };
 
     // $scope.productoptions = [{ name: "All", id: 1 }, { name: "MBD", id: 2 }, { name: "YMP", id: 3 }];
     // $scope.productselectedOption = $scope.productoptions[1];
 
-    $scope.products = ['MBD', 'YMP'];
+    $scope.products = ['Generic', 'MBD', 'YMP'];
     $scope.selectedProduct = undefined;
     $scope.statuses = ['All', 'Upcoming', 'Active', 'Expired'];
     $scope.selectedStatus = undefined;
@@ -106,6 +169,9 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
             }
             else if($scope.selectedProduct == 'YMP'){
                 $scope.data = $scope.alerts.yourmarketplace;
+            }
+            else if($scope.selectedProduct == 'Generic'){
+                $scope.data = $scope.alerts.iservice;
             }
             return $scope.selectedProduct;
         } else {
@@ -187,7 +253,7 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
 });
 
 
-module.controller('createController', function($scope, $http, $state, $log, jsonService) {
+module.controller('createController', function($scope, $http, $state, $log, $mdToast, jsonService) {
     $scope.alert={
         product: undefined,
         type: undefined,
@@ -200,8 +266,9 @@ module.controller('createController', function($scope, $http, $state, $log, json
         title: '',
         msg: ''
     };
-    $scope.products = ['MBD', 'YMP'];
+    $scope.products = ['Generic', 'MBD', 'YMP'];
     $scope.types = ['Success', 'Warning', 'Danger'];
+    $scope.updated = false;
 
     $scope.getSelectedProduct = function () {
         if ($scope.alert.product !== undefined) {
@@ -229,53 +296,141 @@ module.controller('createController', function($scope, $http, $state, $log, json
 
 
     $scope.submit = function(){
+        var valid = checkFieldsValid();
+        if (valid){
+            var product = transformProduct($scope.alert.product);
+            var newalert = {
+                status: '',
+                type: '',
+                start: '',
+                end: '',
+                msgTitle: '',
+                msg: '',
+                dismiss: ''
+            };
 
-        var product = transformProduct($scope.alert.product);
-        var newalert = {
-            status: '',
-            type: '',
-            start: '',
-            end: '',
-            msgTitle: '',
-            msg: '',
-            dismiss: ''
-        };
+            newalert.type = transformType($scope.alert.type);
+            newalert.status = $scope.alert.status;
+            newalert.dismiss = transformDismiss($scope.alert.dismiss);
+            newalert.start = transformDate($scope.alert.startdate, $scope.alert.starttime);
+            newalert.end = transformDate($scope.alert.enddate, $scope.alert.endtime);
+            newalert.msgTitle = $scope.alert.title;
+            newalert.msg = $scope.alert.msg;
 
-        newalert.type = transformType($scope.alert.type);
-        newalert.status = $scope.alert.status;
-        newalert.dismiss = transformDismiss($scope.alert.dismiss);
-        newalert.start = transformDate($scope.alert.startdate, $scope.alert.starttime);
-        newalert.end = transformDate($scope.alert.enddate, $scope.alert.endtime);
-        newalert.msgTitle = $scope.alert.title;
-        newalert.msg = $scope.alert.msg;
+            console.log(newalert);
 
-        console.log(newalert);
+            // var alertjson = jQuery.extend(true, {}, jsonService.getOriginalJSON());
+            var alertjson = jsonService.getUpdatedJSON();
+            alertjson[product].push(newalert);
+            jsonService.setUpdatedJSON(alertjson);
+            var newjson = JSON.stringify(alertjson);
+            $scope.updated = true;
+            showUpdatedFile();
 
-        // var originaljson = jQuery.extend(true, {}, jsonService.getOriginalJSON());
-        var originaljson = jsonService.getOriginalJSON();
-        originaljson[product].push(newalert);
-        var newjson = JSON.stringify(originaljson);
+            this.showSuccessToast();
+            //this.saveJSON(jsonService.getFilename(), newjson);
+            
 
-        var postobj = {
-            message: 'Alerts update on: ' + new Date(),
-            content: btoa(newjson),
-            sha: jsonService.getSha()
-        };
+            // var postobj = {
+            //     message: 'Alerts update on: ' + new Date(),
+            //     content: btoa(newjson),
+            //     sha: jsonService.getSha()
+            // };
 
-
-        jsonService.postJSON(postobj).success(function(data){
-            console.log('put success');
-        });
-
+            // jsonService.postJSON(jsonService.getFilename(), postobj).success(function(data){
+            //     console.log('put success');
+            // });
+        }
+        // this.showSuccessToast();
     };
+
+    $scope.saveJSON = function () {
+        var blob = new Blob([JSON.stringify(jsonService.getUpdatedJSON())], { type:"application/json;charset=utf-8;" });			
+        var downloadLink = angular.element('<a></a>');
+                    downloadLink.attr('href',window.URL.createObjectURL(blob));
+                    downloadLink.attr('download', jsonService.getFilename());
+        downloadLink[0].click();
+    };
+
+    $scope.showSuccessToast = function() {
+        $mdToast.show({
+          hideDelay   : 8000,
+          position    : 'top right',
+          controller  : 'ToastCtrl',
+          templateUrl : 'templates/toast-template.html'
+        });
+    };
+
+    function checkFieldsValid(){
+        var validchecks = {
+            productvalid: false,
+            typevalid: false,
+            startdatevalid: false,
+            starttimevalid: false,
+            enddatevalid: false,
+            endtimevalid: false,
+            titlevalid: false,
+            msgvalid: false
+        };
+
+        if($('.drpProduct md-select-value span').text() != 'Please select a product'){
+            validchecks.productvalid = true;
+        }
+        if($('.drpType md-select-value span').text() != 'Please select a type'){
+            validchecks.typevalid = true;
+        }
+        if($('.dateStart input').val() != ''){
+            validchecks.startdatevalid = true;
+        }
+        if($('.timeStart').val() != ''){
+            validchecks.starttimevalid = true;
+        }
+        if($('.dateEnd input').val() != ''){
+            validchecks.enddatevalid = true;
+        }
+        if($('.timeEnd').val() != ''){
+            validchecks.endtimevalid = true;
+        }
+        if($('.txtTitle input').val() != ''){
+            validchecks.titlevalid = true;
+        }
+        if($('.txtMsg input').val() != ''){
+            validchecks.msgvalid = true;
+        }
+        var passed = true; 
+        for(var check in validchecks){
+            if (validchecks[check] == false){
+                passed = false;
+                break;
+            }
+        }
+
+        if(!passed){
+            displayError();
+        }
+        else{
+            hideError();
+        }
+
+        return passed;
+    }
+
+    function displayError(){
+        var elem = '.errorSection';
+        $(elem).css("display","block");
+    }
+    function hideError(){
+        var elem = '.errorSection';
+        $(elem).css("display","none");
+    }
 
     function transformProduct(productString){
         if(productString == 'MBD')
             return 'mybusiness';
         else if (productString == 'YMP')
             return 'yourmarketplace';
-        // else 
-        //     create for all apps
+        else if (productString == 'Generic')
+            return 'iservice';
         
     }
     function transformType(typeString){
@@ -313,5 +468,23 @@ module.controller('createController', function($scope, $http, $state, $log, json
 
         return datetime;
     }
+    function showUpdatedFile(){
+        $('.downloadlink').css("color", "rgba(255,82,82,0.87)");
+        $('.downloadlink').css("font-weight", "bold");
+        $('.downloadlink').text('Download updated file');
+    }
+    function hideUpdatedFile(){
+        $('.downloadlink').css("color", "unset");
+        $('.downloadlink').css("font-weight", "unset");
+        $('.downloadlink').text('unset');
+    }
 
 });
+
+module.controller('ToastCtrl', function($scope, $mdToast, $mdDialog) {
+
+    $scope.closeToast = function() {
+      $mdToast
+        .hide();
+    };
+  });

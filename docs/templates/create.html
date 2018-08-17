@@ -2,14 +2,12 @@
     <div class="col-sm-12 contentbox">
 
       <div class="content">
-        <div class="row wp-block dark padding0 margin0">
+        <div class="row firstrow dark padding0 margin0">
 
             <div class="col-sm-6 productfilter">
-                <span>
-                    Select Product:
-                </span>
                 <md-input-container>
-                    <md-select ng-model="alert.product" md-selected-text="getSelectedProduct()" aria-label="select product">
+                        <h4 class="divLabel">Product</h4>
+                    <md-select class="drpProduct" ng-model="alert.product" md-selected-text="getSelectedProduct()" aria-label="select product">
                         <md-option ng-repeat="product in products" ng-value="product">{{product}}</md-option>
                         </md-optgroup>
                     </md-select>
@@ -18,27 +16,26 @@
             </div>
 
             <div class="col-sm-6 typefilter">
-                <span>
-                    Type:
-                </span>
                 <md-input-container>
-                    <md-select ng-model="alert.type" md-selected-text="getSelectedType()" aria-label="select type">
+                    <h4 class="divLabel">Type</h4>
+                    <md-select class="drpType" ng-model="alert.type" md-selected-text="getSelectedType()" aria-label="select type">
                         <md-option ng-repeat="type in types" ng-value="type">{{type}}</md-option>
                         </md-optgroup>
                     </md-select>
                 </md-input-container>
             </div>
         </div>
-        <div class="row">
+
+        <div class="row switchrow">
           <div class="col-sm-6">
-            <span>Alert Status</span>
-            <md-switch class="md-primary" ng-model="alert.status" ng-true-value="'closed'" ng-false-value="'notification'" aria-label="Alert status switch">
+            <h4>Alert Status</h4>
+            <md-switch class="md-primary swStatus" ng-model="alert.status" ng-true-value="'closed'" ng-false-value="'notification'" aria-label="Alert status switch">
                 {{ alert.status }}
             </md-switch>
           </div>
           <div class="col-sm-6">
-              <span>Alert Dismissable</span>
-              <md-switch class="" ng-model="alert.dismiss" ng-true-value="'dismissable'" ng-false-value="'permanent'" aria-label="Alert status switch">
+              <h4>Alert Dismissable</h4>
+              <md-switch class="swDismiss" ng-model="alert.dismiss" ng-true-value="'dismissable'" ng-false-value="'permanent'" aria-label="Alert status switch">
                   {{ alert.dismiss }}
               </md-switch>
           </div>
@@ -46,20 +43,18 @@
 
         <div class="row">
           <div class="col-sm-6">
-            <span>Start Date</span>
+            <h4>Start Date</h4>
               <md-content layout-padding="" layout-margin="" class="datepickerdemoMoment">
-                <md-datepicker ng-model="alert.startdate" ng-change="onDateChanged()" md-placeholder="Start date"></md-datepicker>
-                <!-- <span>Start Time</span> -->
-                <input class="timepicker" type="time" ng-model="alert.starttime" aria-label="start time">
+                <md-datepicker class="dateStart" ng-model="alert.startdate" ng-change="onDateChanged()" md-placeholder="Start date"></md-datepicker>
+                <input class="timepicker timeStart" type="time" ng-model="alert.starttime" aria-label="start time">
               </md-content>
             
           </div>
           <div class="col-sm-6">
-            <span>End date</span>
+            <h4>End date</h4>
               <md-content layout-padding="" layout-margin="" class="datepickerdemoMoment">
-                <md-datepicker ng-model="alert.enddate" ng-change="onDateChanged()" md-placeholder="End date"></md-datepicker>
-              
-                <input class="timepicker" type="time" ng-model="alert.endtime" aria-label="end time">
+                <md-datepicker class="dateEnd" ng-model="alert.enddate" ng-change="onDateChanged()" md-placeholder="End date"></md-datepicker>
+                <input class="timepicker timeEnd" type="time" ng-model="alert.endtime" aria-label="end time">
               </md-content>
             
           </div>
@@ -80,7 +75,11 @@
             </div>
         </div>
 
-      <button type="submit" id="btnSubmitSQ" class="btn btn-success text-right" ng-click="submit()">Submit</button>
+        <div class="row errorSection">
+            <span>Error: Please correctly fill in all fields</span>
+        </div>
+
+      <button type="submit" id="btnSubmit" class="btn btn-success pull-left" ng-click="submit()">Submit</button>
     </div>
   </div>
 
@@ -90,5 +89,4 @@
 
 
 </div> <!--main container-->
-
 
