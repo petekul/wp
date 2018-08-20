@@ -69,16 +69,21 @@ module.config(["$stateProvider", "$urlRouterProvider", "$mdDateLocaleProvider", 
 
 module.controller('chooseController', function($scope, $http, $state, jsonService) {
 
-    jsonService.getRepo().success(function(data) {
-        $scope.files = data;
+    // jsonService.getRepo().success(function(data) {
+    //     $scope.files = data;
        
-    }).error(function(err) {
+    // }).error(function(err) {
 
-    });
+    // });
 
-    for(var file in $scope.files){
+    $scope.files = [{
+        name:'ALERTS_ppe.json'
+    },{
+        name:'ALERTS_td.json'
+    },{
+        name:'ALERTS_prod.json'
+    }];
 
-    }
 
     $scope.file='td';
     $scope.continue = function(){
@@ -112,7 +117,7 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
     // $http.get('https://api.github.com/repos/petekul/wp/contents/alerts.json').success(function(data) {
     // var alerts = JSON.parse(atob(data.content));
 
-    var testmode = false;
+    var testmode = true;
     if(!testmode){
         jsonService.getJSON(jsonService.getFilename()).success(function(data) {
             $('.manageerror').css("display","none");
@@ -183,6 +188,22 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
     $scope.productSubset = undefined;
     $scope.filterSubset = undefined;
 
+    $scope.displayProduct = function () {
+        if ($scope.selectedProduct !== undefined) {
+            return $scope.selectedProduct;
+        } else {
+            return "Please select a product";
+        }
+
+    };
+    $scope.displayFilter = function () {
+        if ($scope.selectedFilter !== undefined) {
+            return $scope.selectedFilter;
+        } else {
+            return "All";
+        }
+    };
+
     $scope.getSelectedProduct = function () {
         var filteredProducts = [];
         if ($scope.selectedProduct !== undefined) {
@@ -196,11 +217,7 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
                 filteredProducts = $scope.alerts.iservice;
             }
             $scope.productSubset = filteredProducts;
-            return $scope.selectedProduct;
-        } else {
-            return "Please select a product";
-        }
-
+        } 
     };
     $scope.getSelectedFilter = function () {
         var now = new Date();
@@ -208,7 +225,7 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
         if ($scope.selectedFilter !== undefined) {
             if($scope.selectedFilter == 'Upcoming'){
                 for(var row in $scope.allalerts){
-                    if(convertToValidDateObj($scope.allalerts[row].end) > now){
+                    if(convertToValidDateObj($scope.allalerts[row].start) > now){
                         filteredFilters.push($scope.allalerts[row]);
                     }
                 }
@@ -232,18 +249,24 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
             }
 
             $scope.filterSubset = filteredFilters;
-            return $scope.selectedFilter;
-        } else {
-            return "All";
         }
     };
 
     $scope.filterTable = function(){
+        this.getSelectedProduct();
+        this.getSelectedFilter();
         if($scope.productSubset != undefined && $scope.filterSubset != undefined){
             $scope.data = [];
-            for(var x=0;x<$scope.filterSubset.length;x++){
-                if($scope.productSubset.includes($scope.filterSubset[x])){
-                    $scope.data.push($scope.filterSubset[x]);
+            // for(var x=0;x<$scope.productSubset.length;x++){
+            //     if($scope.filterSubset.indexOf($scope.productSubset[x])){
+            //         $scope.data.push($scope.productSubset[x]);
+            //     }
+            // }
+            for(var x=0;x<$scope.productSubset.length;x++){
+                for(var y=0;y<$scope.filterSubset.length;y++){
+                    if(JSON.stringify($scope.productSubset[x]) === JSON.stringify($scope.filterSubset[y])){
+                        $scope.data.push($scope.productSubset[x]);
+                    }
                 }
             }
         }

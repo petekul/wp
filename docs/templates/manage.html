@@ -17,7 +17,7 @@
                 <div class="col-sm-6 productfilter">
                     <md-input-container>
                         <h4 class="divLabel">Product</h4>
-                        <md-select ng-model="selectedProduct" md-selected-text="getSelectedProduct()" ng-change="filterTable()" aria-label="select product">
+                        <md-select ng-model="selectedProduct" md-selected-text="displayProduct()" ng-change="filterTable()" aria-label="select product">
                             <md-optgroup label="products">
                             <md-option ng-repeat="product in products" ng-value="product">{{product}}</md-option>
                             </md-optgroup>
@@ -29,7 +29,7 @@
                 <div class="col-sm-6 statusfilter text-right">
                     <md-input-container>
                         <h4 class="divLabel">Filter</h4>
-                        <md-select ng-model="selectedFilter" md-selected-text="getSelectedFilter()" ng-change="filterTable()" aria-label="select filter">
+                        <md-select ng-model="selectedFilter" md-selected-text="displayFilter()" ng-change="filterTable()" aria-label="select filter">
                             <md-optgroup label="filters">
                             <md-option ng-repeat="filter in filters" ng-value="filter">{{filter}}</md-option>
                             </md-optgroup>
