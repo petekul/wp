@@ -7,13 +7,17 @@ angular.module("app")
         var updatedjson = {};
         var sha = "";
         var filename = "";
+        var alertsDir = "https://api.github.com/repos/petekul/wp/contents/files/config/alerts/";
 
         return {
+            getRepo: function(){
+                return $http.get(alertsDir);
+            },
             getJSON: function(filename){
-                return $http.get("https://api.github.com/repos/petekul/wp/contents/" + filename);
+                return $http.get(alertsDir + filename);
             },
             postJSON: function(filename, json){
-                return $http.put("https://api.github.com/repos/petekul/wp/contents/" + filename, json);
+                return $http.put(alertsDir + filename, json);
             },
             setOriginalJSON: function(json){
                 alertjson = json;

@@ -9,9 +9,9 @@
                     <br/>
                     <md-radio-group ng-model="file">
 
-                    <md-radio-button value="td" class="md-warn">ALERTS_td.json</md-radio-button>
-                    <md-radio-button value="ppe" class="md-warn">ALERTS_ppe.json</md-radio-button>
-                    <md-radio-button value="prod" class="md-warn">ALERTS_prod.json</md-radio-button>
+                    <md-radio-button ng-repeat="file in files" ng-value="file.name" class="md-warn">{{file.name}}</md-radio-button>
+                    <!-- <md-radio-button value="ppe" class="md-warn">ALERTS_ppe.json</md-radio-button>
+                    <md-radio-button value="prod" class="md-warn">ALERTS_prod.json</md-radio-button> -->
 
                     </md-radio-group>
                 </div>  

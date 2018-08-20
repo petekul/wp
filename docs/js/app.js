@@ -68,18 +68,25 @@ module.config(["$stateProvider", "$urlRouterProvider", "$mdDateLocaleProvider", 
     }]);
 
 module.controller('chooseController', function($scope, $http, $state, jsonService) {
+
+    jsonService.getRepo().success(function(data) {
+        $scope.files = data;
+       
+    }).error(function(err) {
+
+    });
+
+    for(var file in $scope.files){
+
+    }
+
     $scope.file='td';
     $scope.continue = function(){
-        if($scope.file == 'td'){
-            jsonService.setFilename('ALERTS_td.json');
-        }
-        if($scope.file == 'ppe'){
-            jsonService.setFilename('ALERTS_ppe.json');
-        }
-        if($scope.file == 'prod'){
-            jsonService.setFilename('ALERTS_prod.json');
-        }
+        jsonService.setFilename($scope.file);
+        hideUpdatedFile();
         $state.go('app.manage');
+        $('.chooseheader').removeClass('active');
+        $('.manageheader').addClass('active');
     };
 
     $scope.active = function(elem){
@@ -91,6 +98,13 @@ module.controller('chooseController', function($scope, $http, $state, jsonServic
         }
         $('.' +elem).addClass('active');
     };
+
+    function hideUpdatedFile(){
+        $('.downloadlink').css("color", "dcdcdc");
+        $('.downloadlink').css("font-weight", "unset");
+        $('.downloadlink').text('Download file');
+    }
+
 });
 
 module.controller('manageController', function($scope, $http, $state, jsonService) {
@@ -98,7 +112,7 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
     // $http.get('https://api.github.com/repos/petekul/wp/contents/alerts.json').success(function(data) {
     // var alerts = JSON.parse(atob(data.content));
 
-    var testmode = true;
+    var testmode = false;
     if(!testmode){
         jsonService.getJSON(jsonService.getFilename()).success(function(data) {
             $('.manageerror').css("display","none");
@@ -113,7 +127,9 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
             $scope.allalerts = $scope.alerts.mybusiness.concat($scope.alerts.yourmarketplace).concat($scope.alerts.iservice);
 
             $scope.data = $scope.allalerts;
-
+            $scope.productSubset = jQuery.extend(true, [], $scope.allalerts);
+            $scope.filterSubset = jQuery.extend(true, [], $scope.allalerts);
+            Object.keys($scope.data).forEach(key => $scope.data[key] === undefined ? delete $scope.data[key] : '');
            
         }).error(function(err) {
             // showError();
@@ -122,7 +138,7 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
         });
     }
     else{
-        $http.get('/wp-notif-admin/' + jsonService.getFilename()).success(function(data) {
+        $http.get('/wp-notif-admin/files/config/alerts/' + jsonService.getFilename()).success(function(data) {
 
             $('.manageerror').css("display","none");
             $('.content').css("display","block");
@@ -135,6 +151,9 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
             $scope.allalerts = $scope.alerts.mybusiness.concat($scope.alerts.yourmarketplace).concat($scope.alerts.iservice);
 
             $scope.data = $scope.allalerts;
+            $scope.productSubset = jQuery.extend(true, [], $scope.allalerts);
+            $scope.filterSubset = jQuery.extend(true, [], $scope.allalerts);
+            Object.keys($scope.data).forEach(key => $scope.data[key] === undefined ? delete $scope.data[key] : '');
 
         }).error(function(err) {
             //showError();
@@ -158,32 +177,75 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
     // $scope.productselectedOption = $scope.productoptions[1];
 
     $scope.products = ['Generic', 'MBD', 'YMP'];
+    $scope.filters = ['All', 'Upcoming', 'Active', 'Expired'];
     $scope.selectedProduct = undefined;
-    $scope.statuses = ['All', 'Upcoming', 'Active', 'Expired'];
-    $scope.selectedStatus = undefined;
+    $scope.selectedFilter = undefined;
+    $scope.productSubset = undefined;
+    $scope.filterSubset = undefined;
 
     $scope.getSelectedProduct = function () {
+        var filteredProducts = [];
         if ($scope.selectedProduct !== undefined) {
             if($scope.selectedProduct == 'MBD'){
-                $scope.data = $scope.alerts.mybusiness;
+                filteredProducts = $scope.alerts.mybusiness;
             }
             else if($scope.selectedProduct == 'YMP'){
-                $scope.data = $scope.alerts.yourmarketplace;
+                filteredProducts = $scope.alerts.yourmarketplace;
             }
             else if($scope.selectedProduct == 'Generic'){
-                $scope.data = $scope.alerts.iservice;
+                filteredProducts = $scope.alerts.iservice;
             }
+            $scope.productSubset = filteredProducts;
             return $scope.selectedProduct;
         } else {
             return "Please select a product";
         }
 
     };
-    $scope.getSelectedStatus = function () {
-        if ($scope.selectedStatus !== undefined) {
-            return $scope.selectedStatus;
+    $scope.getSelectedFilter = function () {
+        var now = new Date();
+        var filteredFilters = [];
+        if ($scope.selectedFilter !== undefined) {
+            if($scope.selectedFilter == 'Upcoming'){
+                for(var row in $scope.allalerts){
+                    if(convertToValidDateObj($scope.allalerts[row].end) > now){
+                        filteredFilters.push($scope.allalerts[row]);
+                    }
+                }
+            }
+            else if($scope.selectedFilter == 'Active'){
+                for(var row in $scope.allalerts){
+                    if(convertToValidDateObj($scope.allalerts[row].start) < now && convertToValidDateObj($scope.allalerts[row].end) > now){
+                        filteredFilters.push($scope.allalerts[row]);
+                    }
+                }
+            }
+            else if($scope.selectedFilter == 'Expired'){
+                for(var row in $scope.allalerts){
+                    if(convertToValidDateObj($scope.allalerts[row].end) < now){
+                        filteredFilters.push($scope.allalerts[row]);
+                    }
+                }
+            }
+            else if($scope.selectedFilter == 'All'){
+                filteredFilters = $scope.allalerts;
+            }
+
+            $scope.filterSubset = filteredFilters;
+            return $scope.selectedFilter;
         } else {
             return "All";
+        }
+    };
+
+    $scope.filterTable = function(){
+        if($scope.productSubset != undefined && $scope.filterSubset != undefined){
+            $scope.data = [];
+            for(var x=0;x<$scope.filterSubset.length;x++){
+                if($scope.productSubset.includes($scope.filterSubset[x])){
+                    $scope.data.push($scope.filterSubset[x]);
+                }
+            }
         }
     };
 
@@ -196,27 +258,22 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
     selectable: true,
     multiSelect: true,
     columns: [{
-      name: "Status",
-      prop: "status",
+        name: "Title",
+        prop: "msgTitle",
+        width: 200
     }, {
-      name: "type",
-      prop: "type"
+        name: "Message",
+        prop: "msg",
+        width: 300
     }, {
-      name: "start date",
-      prop: "start"
+        name: "Type",
+        prop: "type"
     }, {
-      name: "end date",
-      prop: "end"
+        name: "Start date",
+        prop: "start"
     }, {
-      name: "msgTitle",
-      prop: "msgTitle"
-    }, {
-      name: "msg",
-      prop: "msg",
-      width: 300
-    }, {
-      name: "dismiss",
-      prop: "dismiss"
+        name: "End date",
+        prop: "end"
     }]
   };
   $scope.selected = [];
@@ -228,6 +285,11 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
   };
    
 
+
+    function convertToValidDateObj(datestr){
+        var bits = datestr.split(/\D/);
+        return new Date(bits[2], --bits[1], bits[0], bits[3], bits[4]);
+    }
 
     function transformData(json){
         console.log(json);
@@ -472,11 +534,6 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
         $('.downloadlink').css("color", "rgba(255,82,82,0.87)");
         $('.downloadlink').css("font-weight", "bold");
         $('.downloadlink').text('Download updated file');
-    }
-    function hideUpdatedFile(){
-        $('.downloadlink').css("color", "unset");
-        $('.downloadlink').css("font-weight", "unset");
-        $('.downloadlink').text('unset');
     }
 
 });
