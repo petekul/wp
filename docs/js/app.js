@@ -1,4 +1,4 @@
-var module = angular.module('app', ['ui.router', 'data-table', 'ngMaterial']);
+var module = angular.module('app', ['ui.router', 'data-table', 'ngMaterial', 'textAngular']);
 
 
 module.config(["$stateProvider", "$urlRouterProvider", "$mdDateLocaleProvider", function($stateProvider, $urlRouterProvider, $mdDateLocaleProvider) {
@@ -112,7 +112,7 @@ module.controller('chooseController', function($scope, $http, $state, jsonServic
 
 });
 
-module.controller('manageController', function($scope, $http, $state, jsonService) {
+module.controller('manageController', function($scope, $http, $state, $mdToast, jsonService) {
 
     // $http.get('https://api.github.com/repos/petekul/wp/contents/alerts.json').success(function(data) {
     // var alerts = JSON.parse(atob(data.content));
@@ -167,16 +167,6 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
 
         });
     }
-    
-    $scope.edit = function(){
-        console.log('yes');  
-        $scope.data = $scope.alerts.yourmarketplace;
-    };
-
-    $scope.delete = function(){
-        var originaljson = jsonService.getOriginalJSON();
-        var selected = $scope.selected;
-    };
 
     // $scope.productoptions = [{ name: "All", id: 1 }, { name: "MBD", id: 2 }, { name: "YMP", id: 3 }];
     // $scope.productselectedOption = $scope.productoptions[1];
@@ -257,11 +247,6 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
         this.getSelectedFilter();
         if($scope.productSubset != undefined && $scope.filterSubset != undefined){
             $scope.data = [];
-            // for(var x=0;x<$scope.productSubset.length;x++){
-            //     if($scope.filterSubset.indexOf($scope.productSubset[x])){
-            //         $scope.data.push($scope.productSubset[x]);
-            //     }
-            // }
             for(var x=0;x<$scope.productSubset.length;x++){
                 for(var y=0;y<$scope.filterSubset.length;y++){
                     if(JSON.stringify($scope.productSubset[x]) === JSON.stringify($scope.filterSubset[y])){
@@ -273,41 +258,89 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
     };
 
 
-  $scope.options = {
-    rowHeight: 50,
-    footerHeight: false,
-    scrollbarV: false,
-    headerHeight: 50,
-    selectable: true,
-    multiSelect: true,
-    columns: [{
-        name: "Title",
-        prop: "msgTitle",
-        width: 200
-    }, {
-        name: "Message",
-        prop: "msg",
-        width: 300
-    }, {
-        name: "Type",
-        prop: "type"
-    }, {
-        name: "Start date",
-        prop: "start"
-    }, {
-        name: "End date",
-        prop: "end"
-    }]
-  };
-  $scope.selected = [];
-  $scope.onSelect = function(row) {
-    console.log('ROW SELECTED!', row);
-  };
-  $scope.onRowClick = function(row) {
-    console.log('ROW CLICKED', row);
-  };
-   
+    $scope.options = {
+        rowHeight: 50,
+        footerHeight: false,
+        scrollbarV: false,
+        headerHeight: 50,
+        selectable: true,
+        multiSelect: true,
+        columns: [{
+            name: "Title",
+            prop: "msgTitle",
+            width: 200
+        }, {
+            name: "Message",
+            prop: "msg",
+            width: 300
+        }, {
+            name: "Type",
+            prop: "type"
+        }, {
+            name: "Start date",
+            prop: "start"
+        }, {
+            name: "End date",
+            prop: "end"
+        }]
+    };
+    $scope.selected = [];
+    $scope.onSelect = function(row) {
+        console.log('ROW SELECTED!', row);
+    };
+    $scope.onRowClick = function(row) {
+        console.log('ROW CLICKED', row);
+    };
 
+    $scope.edit = function(){
+        console.log('yes');  
+        $scope.data = $scope.alerts.yourmarketplace;
+    };
+
+    $scope.delete = function(){
+        var alertjson = jsonService.getUpdatedJSON();
+        var selected = $scope.selected;
+        var product = transformProduct($scope.selectedProduct);
+
+        for(var i=0;i<selected.length;i++){
+            selected[i].start = transformDateToJSON(selected[i].start);
+            selected[i].end = transformDateToJSON(selected[i].end);
+        }
+        alertjson[product] = diff(alertjson[product], selected);
+        jsonService.setUpdatedJSON(alertjson);
+        var newjson = JSON.stringify(alertjson);
+        $scope.updated = true;
+
+        $scope.data = jsonService.getUpdatedJSON()[product];
+        
+        showUpdatedFile();
+        this.showDeleteToast();
+    };
+   
+    $scope.showDeleteToast = function() {
+        $mdToast.show({
+          hideDelay   : 8000,
+          position    : 'top right',
+          controller  : 'ToastCtrl',
+          templateUrl : 'templates/delete-toast-template.html'
+        });
+    };
+    
+    function showUpdatedFile(){
+        $('.downloadlink').css("color", "rgba(255,82,82,0.87)");
+        $('.downloadlink').css("font-weight", "bold");
+        $('.downloadlink').text('Download updated file');
+    }
+
+    function diff(a, b) {
+        for(var x=0;x<a.length;x++){
+            for(var y=0;y<b.length;y++){
+                if(JSON.stringify(a[x]) === JSON.stringify(b[y]))
+                    a.splice(x, 1);
+            }
+        }
+        return a;
+    }
 
     function convertToValidDateObj(datestr){
         var bits = datestr.split(/\D/);
@@ -334,11 +367,29 @@ module.controller('manageController', function($scope, $http, $state, jsonServic
 
         return day + '/' + month + '/' + year + ' ' + hour + ':' + minute;
     }
+    function transformProduct(productString){
+        if(productString == 'MBD')
+            return 'mybusiness';
+        else if (productString == 'YMP')
+            return 'yourmarketplace';
+        else if (productString == 'Generic')
+            return 'iservice';
+    }
+    function transformDateToJSON(dateString){
+        var date = dateString.substring(0,2);
+        var month = dateString.substring(3,5);
+        var year = dateString.substring(6,10);
+        var hour = dateString.substring(11,13);
+        var minute = dateString.substring(14,16);
+
+        var datetime = year + month + date + hour + minute;
+        return datetime;
+    }
 
 });
 
 
-module.controller('createController', function($scope, $http, $state, $log, $mdToast, jsonService) {
+module.controller('createController', function($scope, $http, $state, $log, $mdToast, textAngularManager, jsonService) {
     $scope.alert={
         product: undefined,
         type: undefined,
@@ -366,7 +417,7 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
         if ($scope.alert.type !== undefined) {
             return $scope.alert.type;
         } else {
-            return "Please select a type";
+            return "Type";
         }
     };
 
@@ -383,7 +434,7 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
     $scope.submit = function(){
         var valid = checkFieldsValid();
         if (valid){
-            var product = transformProduct($scope.alert.product);
+            var products = transformProduct($scope.alert.product);
             var newalert = {
                 status: '',
                 type: '',
@@ -393,26 +444,24 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
                 msg: '',
                 dismiss: ''
             };
-
-            newalert.type = transformType($scope.alert.type);
-            newalert.status = $scope.alert.status;
-            newalert.dismiss = transformDismiss($scope.alert.dismiss);
-            newalert.start = transformDate($scope.alert.startdate, $scope.alert.starttime);
-            newalert.end = transformDate($scope.alert.enddate, $scope.alert.endtime);
-            newalert.msgTitle = $scope.alert.title;
-            newalert.msg = $scope.alert.msg;
-
-            console.log(newalert);
-
-            // var alertjson = jQuery.extend(true, {}, jsonService.getOriginalJSON());
             var alertjson = jsonService.getUpdatedJSON();
-            alertjson[product].push(newalert);
+            for(var i=0;i<products.length;i++){
+                newalert.type = transformType($scope.alert.type);
+                newalert.status = $scope.alert.status;
+                newalert.dismiss = transformDismiss($scope.alert.dismiss);
+                newalert.start = transformDate($scope.alert.startdate, $scope.alert.starttime);
+                newalert.end = transformDate($scope.alert.enddate, $scope.alert.endtime);
+                newalert.msgTitle = $scope.alert.title;
+                newalert.msg = $scope.alert.msg;
+
+                alertjson[products[i]].push(newalert);
+            }
             jsonService.setUpdatedJSON(alertjson);
             var newjson = JSON.stringify(alertjson);
             $scope.updated = true;
             showUpdatedFile();
 
-            this.showSuccessToast();
+            this.showCreateToast();
             //this.saveJSON(jsonService.getFilename(), newjson);
             
 
@@ -437,12 +486,12 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
         downloadLink[0].click();
     };
 
-    $scope.showSuccessToast = function() {
+    $scope.showCreateToast = function() {
         $mdToast.show({
           hideDelay   : 8000,
           position    : 'top right',
           controller  : 'ToastCtrl',
-          templateUrl : 'templates/toast-template.html'
+          templateUrl : 'templates/create-toast-template.html'
         });
     };
 
@@ -509,14 +558,17 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
         $(elem).css("display","none");
     }
 
-    function transformProduct(productString){
-        if(productString == 'MBD')
-            return 'mybusiness';
-        else if (productString == 'YMP')
-            return 'yourmarketplace';
-        else if (productString == 'Generic')
-            return 'iservice';
-        
+    function transformProduct(productSelection){
+        var translatedProducts = [];
+        for(var i=0;i<productSelection.length;i++){
+            if(productSelection[i] == 'MBD')
+                translatedProducts.push('mybusiness');
+            else if (productSelection[i] == 'YMP')
+                translatedProducts.push('yourmarketplace');
+            else if (productSelection[i] == 'Generic')
+                translatedProducts.push('iservice');
+        }
+        return translatedProducts;
     }
     function transformType(typeString){
         return typeString.toLowerCase();
@@ -558,6 +610,9 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
         $('.downloadlink').css("font-weight", "bold");
         $('.downloadlink').text('Download updated file');
     }
+
+    
+    $scope.disabled = false;
 
 });
 

@@ -6,10 +6,10 @@
 
             <div class="col-sm-6 productfilter">
                 <md-input-container>
-                        <h4 class="divLabel">Product</h4>
-                    <md-select class="drpProduct" ng-model="alert.product" md-selected-text="getSelectedProduct()" aria-label="select product">
+                    <label class="divLabel">Product</label>
+                    <md-select class="drpProduct" ng-model="alert.product" data-md-container-class="selectdemoSelectHeader" multiple aria-label="select product">
                         <md-option ng-repeat="product in products" ng-value="product">{{product}}</md-option>
-                        </md-optgroup>
+                        
                     </md-select>
                 </md-input-container>
                 
@@ -17,7 +17,7 @@
 
             <div class="col-sm-6 typefilter">
                 <md-input-container>
-                    <h4 class="divLabel">Type</h4>
+                    <label class="divLabel">Type</label>
                     <md-select class="drpType" ng-model="alert.type" md-selected-text="getSelectedType()" aria-label="select type">
                         <md-option ng-repeat="type in types" ng-value="type">{{type}}</md-option>
                         </md-optgroup>
@@ -28,13 +28,13 @@
 
         <div class="row switchrow">
           <div class="col-sm-6">
-            <h4>Alert Status</h4>
+            <h5>Alert Status</h5>
             <md-switch class="md-primary swStatus" ng-model="alert.status" ng-true-value="'closed'" ng-false-value="'notification'" aria-label="Alert status switch">
                 {{ alert.status }}
             </md-switch>
           </div>
           <div class="col-sm-6">
-              <h4>Alert Dismissable</h4>
+              <h5>Alert Dismissable</h5>
               <md-switch class="swDismiss" ng-model="alert.dismiss" ng-true-value="'dismissable'" ng-false-value="'permanent'" aria-label="Alert status switch">
                   {{ alert.dismiss }}
               </md-switch>
@@ -43,7 +43,7 @@
 
         <div class="row">
           <div class="col-sm-6">
-            <h4>Start Date</h4>
+            <h5>Start Date</h5>
               <md-content layout-padding="" layout-margin="" class="datepickerdemoMoment">
                 <md-datepicker class="dateStart" ng-model="alert.startdate" ng-change="onDateChanged()" md-placeholder="Start date"></md-datepicker>
                 <input class="timepicker timeStart" type="time" ng-model="alert.starttime" aria-label="start time">
@@ -51,7 +51,7 @@
             
           </div>
           <div class="col-sm-6">
-            <h4>End date</h4>
+            <h5>End date</h5>
               <md-content layout-padding="" layout-margin="" class="datepickerdemoMoment">
                 <md-datepicker class="dateEnd" ng-model="alert.enddate" ng-change="onDateChanged()" md-placeholder="End date"></md-datepicker>
                 <input class="timepicker timeEnd" type="time" ng-model="alert.endtime" aria-label="end time">
@@ -60,7 +60,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row textRow">
             <div class="col-sm-12">
                 <md-input-container class="txtTitle">
                     <label>Title</label>
@@ -68,11 +68,15 @@
                 </md-input-container>
             </div>
             <div class="col-sm-12">
-                <md-input-container class="txtMsg">
-                    <label>Message</label>
-                    <input ng-model="alert.msg">
-                </md-input-container>
+                    <h4>Message</h4>
+                    <text-angular name="htmlcontent" ng-model="alert.msg" 
+                                    ta-toolbar="[['html'],['bold','italics','underline','strikeThrough'],['ul','ol','insertLink']]"
+                                    ta-text-editor-class="form-control myform1-height" ta-html-editor-class="form-control myform1-height">
+                        
+                    </text-angular>
             </div>
+
+
         </div>
 
         <div class="row errorSection">
