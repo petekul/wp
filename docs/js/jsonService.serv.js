@@ -10,7 +10,7 @@ angular.module("app")
         var alertsDir = "https://api.github.com/repos/petekul/wp/contents/files/config/alerts/";
 
         return {
-            getRepo: function(){
+            getRepo: function(user){
                 return $http.get(alertsDir);
             },
             getJSON: function(filename){

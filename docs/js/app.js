@@ -127,11 +127,16 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
 
             jsonService.setSha(data.sha);
             jsonService.setOriginalJSON(originaljsondata);
-            jsonService.setUpdatedJSON(originaljsondata);
             $scope.alerts = transformData(jsondata);
+
+            $scope.alerts.mybusiness = addAppToData($scope.alerts.mybusiness, 'MBD');
+            $scope.alerts.yourmarketplace = addAppToData($scope.alerts.yourmarketplace, 'YMP');
+            $scope.alerts.iservice = addAppToData($scope.alerts.iservice, 'Generic');
             $scope.allalerts = $scope.alerts.mybusiness.concat($scope.alerts.yourmarketplace).concat($scope.alerts.iservice);
+            jsonService.setUpdatedJSON($scope.alerts);
 
             $scope.data = $scope.allalerts;
+
             $scope.productSubset = jQuery.extend(true, [], $scope.allalerts);
             $scope.filterSubset = jQuery.extend(true, [], $scope.allalerts);
             Object.keys($scope.data).forEach(key => $scope.data[key] === undefined ? delete $scope.data[key] : '');
@@ -151,26 +156,27 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
 
             var originaljsondata = jQuery.extend(true, {}, data);
             jsonService.setOriginalJSON(originaljsondata);
-            jsonService.setUpdatedJSON(originaljsondata);
             $scope.alerts = transformData(data);
+
+            $scope.alerts.mybusiness = addAppToData($scope.alerts.mybusiness, 'MBD');
+            $scope.alerts.yourmarketplace = addAppToData($scope.alerts.yourmarketplace, 'YMP');
+            $scope.alerts.iservice = addAppToData($scope.alerts.iservice, 'Generic');
             $scope.allalerts = $scope.alerts.mybusiness.concat($scope.alerts.yourmarketplace).concat($scope.alerts.iservice);
+            jsonService.setUpdatedJSON($scope.alerts);
 
             $scope.data = $scope.allalerts;
+
             $scope.productSubset = jQuery.extend(true, [], $scope.allalerts);
             $scope.filterSubset = jQuery.extend(true, [], $scope.allalerts);
             Object.keys($scope.data).forEach(key => $scope.data[key] === undefined ? delete $scope.data[key] : '');
 
         }).error(function(err) {
-            //showError();
             $('.manageerror').css("display","block");
             $('.content').css("display","none");
 
         });
     }
-
-    // $scope.productoptions = [{ name: "All", id: 1 }, { name: "MBD", id: 2 }, { name: "YMP", id: 3 }];
-    // $scope.productselectedOption = $scope.productoptions[1];
-
+    
     $scope.products = ['Generic', 'MBD', 'YMP'];
     $scope.filters = ['All', 'Upcoming', 'Active', 'Expired'];
     $scope.selectedProduct = undefined;
@@ -196,15 +202,16 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
 
     $scope.getSelectedProduct = function () {
         var filteredProducts = [];
+        var alerts = jsonService.getUpdatedJSON();
         if ($scope.selectedProduct !== undefined) {
             if($scope.selectedProduct == 'MBD'){
-                filteredProducts = $scope.alerts.mybusiness;
+                filteredProducts = alerts.mybusiness;
             }
             else if($scope.selectedProduct == 'YMP'){
-                filteredProducts = $scope.alerts.yourmarketplace;
+                filteredProducts = alerts.yourmarketplace;
             }
             else if($scope.selectedProduct == 'Generic'){
-                filteredProducts = $scope.alerts.iservice;
+                filteredProducts = alerts.iservice;
             }
             $scope.productSubset = filteredProducts;
         } 
@@ -212,25 +219,28 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
     $scope.getSelectedFilter = function () {
         var now = new Date();
         var filteredFilters = [];
+        var alerts = jsonService.getUpdatedJSON();
+        alerts = alerts.mybusiness.concat(alerts.yourmarketplace).concat(alerts.iservice);
+        Object.keys(alerts).forEach(key => alerts[key] === undefined ? delete alerts[key] : '');
         if ($scope.selectedFilter !== undefined) {
             if($scope.selectedFilter == 'Upcoming'){
-                for(var row in $scope.allalerts){
-                    if(convertToValidDateObj($scope.allalerts[row].start) > now){
-                        filteredFilters.push($scope.allalerts[row]);
+                for(var row in alerts){
+                    if(convertToValidDateObj(alerts[row].start) > now){
+                        filteredFilters.push(alerts[row]);
                     }
                 }
             }
             else if($scope.selectedFilter == 'Active'){
-                for(var row in $scope.allalerts){
-                    if(convertToValidDateObj($scope.allalerts[row].start) < now && convertToValidDateObj($scope.allalerts[row].end) > now){
-                        filteredFilters.push($scope.allalerts[row]);
+                for(var row in alerts){
+                    if(convertToValidDateObj(alerts[row].start) < now && convertToValidDateObj(alerts[row].end) > now){
+                        filteredFilters.push(alerts[row]);
                     }
                 }
             }
             else if($scope.selectedFilter == 'Expired'){
-                for(var row in $scope.allalerts){
-                    if(convertToValidDateObj($scope.allalerts[row].end) < now){
-                        filteredFilters.push($scope.allalerts[row]);
+                for(var row in alerts){
+                    if(convertToValidDateObj(alerts[row].end) < now){
+                        filteredFilters.push(alerts[row]);
                     }
                 }
             }
@@ -255,6 +265,9 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
                 }
             }
         }
+        else{
+            $scope.data = [];
+        }
     };
 
 
@@ -266,6 +279,10 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
         selectable: true,
         multiSelect: true,
         columns: [{
+            name: "App",
+            prop: "app",
+            width: 100
+        }, {
             name: "Title",
             prop: "msgTitle",
             width: 200
@@ -282,6 +299,9 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
         }, {
             name: "End date",
             prop: "end"
+        }, {
+            name: "Status",
+            prop: "status"
         }]
     };
     $scope.selected = [];
@@ -298,23 +318,73 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
     };
 
     $scope.delete = function(){
-        var alertjson = jsonService.getUpdatedJSON();
+        var alertjson = jQuery.extend(true, {}, jsonService.getUpdatedJSON());
+        var newjson = jQuery.extend(true, {}, alertjson);
         var selected = $scope.selected;
         var product = transformProduct($scope.selectedProduct);
+        // if(product != undefined){
+            if(false){
+            for(var i=0;i<selected.length;i++){
+                selected[i].start = transformDateToJSON(selected[i].start);
+                selected[i].end = transformDateToJSON(selected[i].end);
+            }
+            alertjson[product] = diff(alertjson[product], selected);
+            jsonService.setUpdatedJSON(alertjson);
 
-        for(var i=0;i<selected.length;i++){
-            selected[i].start = transformDateToJSON(selected[i].start);
-            selected[i].end = transformDateToJSON(selected[i].end);
+            newjson = jsonService.getUpdatedJSON()[product];
+
+            $scope.data = newjson;
+            
+            showUpdatedFile();
+            this.showDeleteToast();
         }
-        alertjson[product] = diff(alertjson[product], selected);
-        jsonService.setUpdatedJSON(alertjson);
-        var newjson = JSON.stringify(alertjson);
-        $scope.updated = true;
+        else{
+            var mbdalert = [];
+            var ympalert = [];
+            var iservicealert = [];
 
-        $scope.data = jsonService.getUpdatedJSON()[product];
-        
-        showUpdatedFile();
-        this.showDeleteToast();
+            //sort alerts and remove 'app' attribute
+            for(var i=0;i<selected.length;i++){
+                // selected[i].start = transformDateToJSON(selected[i].start);
+                // selected[i].end = transformDateToJSON(selected[i].end);
+                if(selected[i].app === 'MBD'){
+                    mbdalert.push(selected[i]);
+                }
+                else if(selected[i].app === 'YMP'){
+                    ympalert.push(selected[i]);
+                }
+                else if(selected[i].app === 'Generic'){
+                    iservicealert.push(selected[i]);
+                }
+            }
+            if(mbdalert.length > 0){
+                mbdalert = diff(alertjson.mybusiness, mbdalert);
+                newjson.mybusiness = mbdalert;
+            }
+            if(ympalert.length > 0){
+                ympalert = diff(alertjson.yourmarketplace, ympalert);
+                newjson.yourmarketplace = ympalert;
+            }
+            if(iservicealert.length > 0){
+                iservicealert = diff(alertjson.iservice, iservicealert);
+                newjson.iservice = iservicealert;
+            }
+
+            
+
+            jsonService.setUpdatedJSON(newjson);
+            $scope.data = newjson.mybusiness.concat(newjson.yourmarketplace).concat(newjson.iservice);
+
+            if(product != undefined){
+                if(product == 'mybusiness')
+                    $scope.data = newjson.mybusiness;
+                if(product == 'yourmarketplace')
+                    $scope.data = newjson.yourmarketplace;
+                if(product == 'iservice')
+                    $scope.data = newjson.iservice;
+            }
+
+        }
     };
    
     $scope.showDeleteToast = function() {
@@ -335,11 +405,25 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
     function diff(a, b) {
         for(var x=0;x<a.length;x++){
             for(var y=0;y<b.length;y++){
-                if(JSON.stringify(a[x]) === JSON.stringify(b[y]))
+                if(JSON.stringify(a[x]) === JSON.stringify(b[y])){
                     a.splice(x, 1);
+                    x--;
+                }
             }
         }
         return a;
+    }
+    function addAppToData(appdata, appname){
+        for(var row in appdata){
+            appdata[row].app = appname;
+        }
+        return appdata;
+    }
+    function removeAppFromData(appdata){
+        for(var row in appdata){
+            delete appdata[row].app;
+        }
+        return appdata;
     }
 
     function convertToValidDateObj(datestr){
@@ -374,6 +458,12 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
             return 'yourmarketplace';
         else if (productString == 'Generic')
             return 'iservice';
+        else if (productString == 'mybusiness')
+            return 'MBD';
+        else if (productString == 'yourmarketplace')
+            return 'YMP';
+        else if (productString == 'iservice')
+            return 'Generic';
     }
     function transformDateToJSON(dateString){
         var date = dateString.substring(0,2);
@@ -391,7 +481,7 @@ module.controller('manageController', function($scope, $http, $state, $mdToast, 
 
 module.controller('createController', function($scope, $http, $state, $log, $mdToast, textAngularManager, jsonService) {
     $scope.alert={
-        product: undefined,
+        product: [],
         type: undefined,
         status: 'notification',
         dismiss: 'permanent',
@@ -418,6 +508,19 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
             return $scope.alert.type;
         } else {
             return "Type";
+        }
+    };
+
+    $scope.checkedProduct = function (item, list) {
+        return list.indexOf(item) > -1;
+    };
+    $scope.toggleProduct = function (item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) {
+          list.splice(idx, 1);
+        }
+        else {
+          list.push(item);
         }
     };
 
@@ -479,7 +582,17 @@ module.controller('createController', function($scope, $http, $state, $log, $mdT
     };
 
     $scope.saveJSON = function () {
-        var blob = new Blob([JSON.stringify(jsonService.getUpdatedJSON())], { type:"application/json;charset=utf-8;" });			
+        var newjson = jQuery.extend(true, {}, jsonService.getUpdatedJSON());
+        for(var row in newjson.mybusiness){
+            delete newjson.mybusiness[row].app;
+        }
+        for(var row in newjson.yourmarketplace){
+            delete newjson.yourmarketplace[row].app;
+        }
+        for(var row in newjson.iservice){
+            delete newjson.iservice[row].app;
+        }
+        var blob = new Blob([JSON.stringify(newjson)], { type:"application/json;charset=utf-8;" });			
         var downloadLink = angular.element('<a></a>');
                     downloadLink.attr('href',window.URL.createObjectURL(blob));
                     downloadLink.attr('download', jsonService.getFilename());

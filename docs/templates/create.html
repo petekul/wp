@@ -1,38 +1,61 @@
 <div class="container theme-showcase" id="managePage" role="main" ng-controller="createController">
-    <div class="col-sm-12 contentbox">
-
-      <div class="content">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10 contentbox">
+            
+      <div class="col-sm-12 content">
         <div class="row firstrow dark padding0 margin0">
-
-            <div class="col-sm-6 productfilter">
-                <md-input-container>
+            <div class="col-sm-2 detailsidebar">
+                <h5 class='sectionheader'>Details</h5>
+            </div>
+            <div class="col-sm-4 productfilter">
+                <!-- <md-input-container class="mdSelectContainer">
                     <label class="divLabel">Product</label>
                     <md-select class="drpProduct" ng-model="alert.product" data-md-container-class="selectdemoSelectHeader" multiple aria-label="select product">
                         <md-option ng-repeat="product in products" ng-value="product">{{product}}</md-option>
                         
                     </md-select>
-                </md-input-container>
-                
+                </md-input-container> -->
+
+                <label>Product</label>
+                <div layout="row" layout-wrap flex>
+                    <div flex="100" ng-repeat="product in products">
+                    <md-checkbox ng-checked="checkedProduct(product, alert.product)" ng-click="toggleProduct(product, alert.product)">
+                        {{ product }} 
+                    </md-checkbox>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-sm-6 typefilter">
-                <md-input-container>
+            <div class="col-sm-4 typefilter left-pad-0">
+                <!-- <md-input-container class="mdSelectContainer">
                     <label class="divLabel">Type</label>
                     <md-select class="drpType" ng-model="alert.type" md-selected-text="getSelectedType()" aria-label="select type">
                         <md-option ng-repeat="type in types" ng-value="type">{{type}}</md-option>
                         </md-optgroup>
                     </md-select>
-                </md-input-container>
+                </md-input-container> -->
+
+                <label>Type</label>
+
+                <md-radio-group ng-model="alert.type">
+
+                    <md-radio-button ng-repeat="type in types" ng-value="type" class="md-warn">{{type}}</md-radio-button>
+                        <!-- <md-radio-button value="ppe" class="md-warn">ALERTS_ppe.json</md-radio-button>
+                        <md-radio-button value="prod" class="md-warn">ALERTS_prod.json</md-radio-button> -->
+    
+                </md-radio-group>
+            
+
+            </div>
+            <div class="col-sm-2">
+                <md-switch class="md-warn pull-right swStatus" id="closedSwitch" md-invert ng-model="alert.status" ng-true-value="'closed'" ng-false-value="'notification'" aria-label="Alert status switch">
+                    Disable login
+                </md-switch>
             </div>
         </div>
 
+        <hr/>
         <div class="row switchrow">
-          <div class="col-sm-6">
-            <h5>Alert Status</h5>
-            <md-switch class="md-primary swStatus" ng-model="alert.status" ng-true-value="'closed'" ng-false-value="'notification'" aria-label="Alert status switch">
-                {{ alert.status }}
-            </md-switch>
-          </div>
           <div class="col-sm-6">
               <h5>Alert Dismissable</h5>
               <md-switch class="swDismiss" ng-model="alert.dismiss" ng-true-value="'dismissable'" ng-false-value="'permanent'" aria-label="Alert status switch">
@@ -42,33 +65,37 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-6">
-            <h5>Start Date</h5>
-              <md-content layout-padding="" layout-margin="" class="datepickerdemoMoment">
+            <div class="col-sm-2 datetimesidebar">
+                    <h5 class='sectionheader'>Date & time</h5>
+            </div>
+          <div class="col-sm-5">
+              <label>Start</label>
+              <md-content  layout-margin="" class="datepickerdemoMoment">
                 <md-datepicker class="dateStart" ng-model="alert.startdate" ng-change="onDateChanged()" md-placeholder="Start date"></md-datepicker>
-                <input class="timepicker timeStart" type="time" ng-model="alert.starttime" aria-label="start time">
+                <input class="timepicker  timeStart" type="time" ng-model="alert.starttime" aria-label="start time">
               </md-content>
-            
           </div>
-          <div class="col-sm-6">
-            <h5>End date</h5>
-              <md-content layout-padding="" layout-margin="" class="datepickerdemoMoment">
+          <div class="col-sm-4 left-pad-0">
+              <label>End</label>
+              <md-content layout-margin="" class="datepickerdemoMoment">
                 <md-datepicker class="dateEnd" ng-model="alert.enddate" ng-change="onDateChanged()" md-placeholder="End date"></md-datepicker>
-                <input class="timepicker timeEnd" type="time" ng-model="alert.endtime" aria-label="end time">
+                <input class="timepicker pull-right timeEnd" type="time" ng-model="alert.endtime" aria-label="end time">
               </md-content>
-            
           </div>
         </div>
-
+        <hr/>
         <div class="row textRow">
-            <div class="col-sm-12">
+                <div class="col-sm-2 contentsidebar">
+                    <h5 class='sectionheader'>Content</h5>
+                </div>
+            <div class="col-sm-7">
                 <md-input-container class="txtTitle">
                     <label>Title</label>
                     <input ng-model="alert.title">
                 </md-input-container>
             </div>
-            <div class="col-sm-12">
-                    <h4>Message</h4>
+            <div class="col-sm-9">
+                    <label>Message</label>
                     <text-angular name="htmlcontent" ng-model="alert.msg" 
                                     ta-toolbar="[['html'],['bold','italics','underline','strikeThrough'],['ul','ol','insertLink']]"
                                     ta-text-editor-class="form-control myform1-height" ta-html-editor-class="form-control myform1-height">
@@ -83,11 +110,12 @@
             <span>Error: Please correctly fill in all fields</span>
         </div>
 
-      <button type="submit" id="btnSubmit" class="btn btn-success pull-left" ng-click="submit()">Submit</button>
+      <button type="submit" id="btnSubmit" class="btn btn-success pull-right" ng-click="submit()">Create alert</button>
     </div>
+    
   </div>
 
-  
+  <div class="col-sm-1"></div>
 
 <!-- <br/><br/><br/> -->
 
